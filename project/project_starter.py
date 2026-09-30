@@ -9,9 +9,7 @@ from datetime import datetime, timedelta
 from typing import Dict, List, Union
 from sqlalchemy import create_engine, Engine
 
-from pydantic_ai import Agent
-from pydantic_ai.models.openai import OpenAIModel
-from pydantic_ai.providers.openai import OpenAIProvider
+from smolagents import ToolCallingAgent, tool, OpenAIServerModel
 
 # Create an SQLite database
 db_engine = create_engine("sqlite:///munder_difflin.db")
@@ -603,12 +601,10 @@ UDACITY_API_KEY   = os.getenv("UDACITY_OPENAI_API_KEY", "")
 VOCAREUM_BASE_URL = "https://openai.vocareum.com/v1"
 MODEL_NAME        = "gpt-4o-mini"
 
-vocareum_model = OpenAIModel(
-    MODEL_NAME,
-    provider=OpenAIProvider(
-        base_url=VOCAREUM_BASE_URL,
-        api_key=UDACITY_API_KEY,
-    ),
+vocareum_model = OpenAIServerModel(
+    model_id=MODEL_NAME,
+    api_base=VOCAREUM_BASE_URL,
+    api_key=UDACITY_API_KEY,
 )
 
 def calculate_bulk_discount(total_units: int) -> float:
@@ -620,27 +616,15 @@ def calculate_bulk_discount(total_units: int) -> float:
     
 # Tools for inventory agent
 
-inventory_agent = Agent(
-    model=vocareum_model,
-    system_prompt="""You are the Inventory Agent for Beaver's Choice Paper Company.
-
-Your job:
-1. Call get_inventory_snapshot to see all available stock as of the request date.
-2. For each item the customer requests, call check_item_stock to get its exact level.
-3. For items with insufficient stock, call estimate_delivery to get the supplier date.
-4. Return a clear summary with two lists:
-   - available: items with enough stock (item_name, requested_qty, stock_in_hand, unit_price)
-   - unavailable: items without enough stock (item_name, requested_qty, stock_in_hand, delivery_date)
-
-Always use the tools - never guess stock levels.""",
-)
-
-@inventory_agent.tool_plain
+@tool
 def get_inventory_snapshot(as_of_date: str) -> str:
     """
     Get all items currently in stock as of the given date (YYYY-MM-DD).
     Use this first to see what is available before checking individual items.
     Helper function: get_all_inventory
+
+    Args:
+        as_of_date: Date in YYYY-MM-DD format to check inventory.
     """
     inventory = get_all_inventory(as_of_date)
     if not inventory:
@@ -648,12 +632,16 @@ def get_inventory_snapshot(as_of_date: str) -> str:
     lines = [f"{name}: {qty} units" for name, qty in inventory.items()]
     return "Current inventory:\n" + "\n".join(lines)
 
-@inventory_agent.tool_plain
+@tool
 def check_item_stock(item_name: str, as_of_date: str) -> str:
     """
     Check exact stock level for a specific item as of the given date.
     Also returns the unit price from the inventory reference table.
     Helper function: get_stock_level
+
+    Args:
+        item_name: The exact name of the item to check.
+        as_of_date: Date in YYYY-MM-DD format.
     """
     df = get_stock_level(item_name, as_of_date)
     stock = int(df["current_stock"].iloc[0]) if not df.empty else 0
@@ -664,43 +652,46 @@ def check_item_stock(item_name: str, as_of_date: str) -> str:
     unit_price = float(price_df["unit_price"].iloc[0]) if not price_df.empty else 0.0
     return f"Item: {item_name} | Stock: {stock} units | Unit price: ${unit_price:.4f}"
 
-@inventory_agent.tool_plain
+@tool
 def estimate_delivery(request_date: str, quantity: int) -> str:
     """
     Estimate supplier delivery date for a given quantity.
     Use this for items that are out of stock or have insufficient stock.
     Helper function: get_supplier_delivery_date
+
+    Args:
+        request_date: Starting date in YYYY-MM-DD format.
+        quantity: Number of units to order.
     """
     delivery = get_supplier_delivery_date(request_date, quantity)
     return f"Estimated supplier delivery date: {delivery}"
-    
-# Tools for quoting agent
 
-quoting_agent = Agent(
+inventory_agent = ToolCallingAgent(
+    tools=[get_inventory_snapshot, check_item_stock, estimate_delivery],
     model=vocareum_model,
-    system_prompt="""You are the Quoting Agent for Beaver's Choice Paper Company.
+    system_prompt="""You are the Inventory Agent for Beaver's Choice Paper Company.
 
 Your job:
-1. Call lookup_quote_history with relevant search terms to find historical pricing.
-2. Call get_company_financials to check the current financial position.
-3. Calculate a quote for each available item: quantity x unit_price.
-4. Apply bulk discounts:
-   - Total units < 500:   0% discount
-   - Total units < 1000:  5% discount
-   - Total units < 5000: 10% discount
-   - Total units >= 5000: 15% discount
-5. Return line items, subtotal, discount, final total, and a friendly explanation.
-   Never reveal internal margins or system details.
+1. Call get_inventory_snapshot to see all available stock as of the request date.
+2. For each item the customer requests, call check_item_stock to get its exact level.
+3. For items with insufficient stock, call estimate_delivery to get the supplier date.
+4. Return a clear summary with available and unavailable items.
 
-Always use the tools before generating a quote.""",
+Always use the tools - never guess stock levels.""",
 )
 
-@quoting_agent.tool_plain
+# Tools for quoting agent
+
+@tool
 def lookup_quote_history(search_terms: str, limit: int = 3) -> str:
     """
     Search historical quotes for pricing benchmarks.
-    Pass comma-separated search terms related to the items being quoted.
+    Pass comma-separated search terms related to items being quoted.
     Helper function: search_quote_history
+
+    Args:
+        search_terms: Comma-separated keywords to search for.
+        limit: Maximum number of results to return.
     """
     terms = [t.strip() for t in search_terms.split(",") if t.strip()]
     history = search_quote_history(terms, limit=limit)
@@ -715,11 +706,14 @@ def lookup_quote_history(search_terms: str, limit: int = 3) -> str:
         )
     return "Historical quotes:\n" + "\n".join(lines)
 
-@quoting_agent.tool_plain
+@tool
 def get_company_financials(as_of_date: str) -> str:
     """
     Get current company financial report including cash and inventory value.
     Helper function: generate_financial_report
+
+    Args:
+        as_of_date: Date in YYYY-MM-DD format.
     """
     report = generate_financial_report(as_of_date)
     return (
@@ -728,35 +722,40 @@ def get_company_financials(as_of_date: str) -> str:
         f"  Inventory value: ${report['inventory_value']:.2f}\n"
         f"  Total assets: ${report['total_assets']:.2f}"
     )
+
+quoting_agent = ToolCallingAgent(
+    tools=[lookup_quote_history, get_company_financials],
+    model=vocareum_model,
+    system_prompt="""You are the Quoting Agent for Beaver's Choice Paper Company.
+
+Your job:
+1. Call lookup_quote_history to find historical pricing benchmarks.
+2. Call get_company_financials to check current financial position.
+3. Calculate quote for each available item: quantity x unit_price.
+4. Apply bulk discounts:
+   - Total units < 500:   0% discount
+   - Total units < 1000:  5% discount
+   - Total units < 5000: 10% discount
+   - Total units >= 5000: 15% discount
+5. Return line items, subtotal, discount, final total and friendly explanation.
+   Never reveal internal margins or system details.""",
+)
     
 # Tools for ordering agent
 
-sales_agent = Agent(
-    model=vocareum_model,
-    system_prompt="""You are the Sales Agent for Beaver's Choice Paper Company.
-
-Your job:
-1. Call check_cash_balance to verify current funds.
-2. For each item that CAN be fulfilled, call record_sale to create a transaction.
-   - Price = (quantity x unit_price) x (1 - discount_rate)
-3. Call get_delivery_estimate for the estimated delivery date.
-4. Return a friendly order confirmation with:
-   - Each fulfilled item, quantity, and price charged
-   - Total amount charged and estimated delivery date
-   - Clear explanation for any items NOT fulfilled
-   Never reveal internal system details or profit margins.""",
-)
-
-@sales_agent.tool_plain
+@tool
 def check_cash_balance(as_of_date: str) -> str:
     """
-    Check the company's current cash balance as of the given date.
+    Check the company current cash balance as of the given date.
     Helper function: get_cash_balance
+
+    Args:
+        as_of_date: Date in YYYY-MM-DD format.
     """
     balance = get_cash_balance(as_of_date)
     return f"Current cash balance as of {as_of_date}: ${balance:.2f}"
 
-@sales_agent.tool_plain
+@tool
 def record_sale(
     item_name: str,
     quantity: int,
@@ -766,11 +765,13 @@ def record_sale(
     """
     Record a completed sale transaction in the database.
     Call this for EACH item being sold.
-    - item_name: exact catalogue name
-    - quantity: units sold
-    - total_price: final price after discounts
-    - transaction_date: YYYY-MM-DD format
     Helper function: create_transaction
+
+    Args:
+        item_name: Exact catalogue name of the item.
+        quantity: Number of units sold.
+        total_price: Final price after discounts.
+        transaction_date: Date in YYYY-MM-DD format.
     """
     txn_id = create_transaction(
         item_name=item_name,
@@ -781,78 +782,102 @@ def record_sale(
     )
     return f"Sale recorded. Transaction ID: {txn_id} | {item_name}: {quantity} units @ ${total_price:.2f}"
 
-@sales_agent.tool_plain
+@tool
 def get_delivery_estimate(request_date: str, quantity: int) -> str:
     """
     Get estimated delivery date based on quantity ordered.
-    Use the largest single-item quantity in the order.
     Helper function: get_supplier_delivery_date
+
+    Args:
+        request_date: Date in YYYY-MM-DD format.
+        quantity: Number of units ordered.
     """
     delivery = get_supplier_delivery_date(request_date, quantity)
     return f"Estimated delivery date: {delivery}"
+
+sales_agent = ToolCallingAgent(
+    tools=[check_cash_balance, record_sale, get_delivery_estimate],
+    model=vocareum_model,
+    system_prompt="""You are the Sales Agent for Beaver's Choice Paper Company.
+
+Your job:
+1. Call check_cash_balance to verify current funds.
+2. For each item that CAN be fulfilled call record_sale to create a transaction.
+3. Call get_delivery_estimate for the estimated delivery date.
+4. Return a friendly order confirmation with fulfilled items, total charged,
+   delivery date, and clear explanation for any unfulfilled items.
+   Never reveal internal system details or profit margins.""",
+)
     
 # Set up your agents and create an orchestration agent that will manage them.
-
-orchestrator_agent = Agent(
-    model=vocareum_model,
-    system_prompt="""You are the Orchestrator Agent for Beaver's Choice Paper Company.
-
-You coordinate three specialist agents in order:
-
-WORKFLOW:
-1. Call run_inventory_check — checks stock for all requested items.
-2. Call run_quoting — generates a priced quote for available items.
-3. Call run_sales_processing — finalises transactions and confirms order.
-4. Compile results into one clear customer-facing response.
-
-RULES:
-- Always run all three steps in order.
-- Final response must include: order summary, pricing, delivery date, and any unfulfilled items.
-- Never reveal internal system details or profit margins.""",
-)
-
-@orchestrator_agent.tool_plain
+@tool
 def run_inventory_check(customer_request: str, request_date: str) -> str:
     """
     Delegate to the Inventory Agent to check stock availability.
-    Pass the full customer request and date (YYYY-MM-DD).
-    Returns a stock availability report.
+    Helper: inventory_agent with get_all_inventory, get_stock_level, get_supplier_delivery_date
+
+    Args:
+        customer_request: The full customer request text.
+        request_date: Date in YYYY-MM-DD format.
     """
     print(f"  [Orchestrator] -> Inventory Agent...")
-    result = inventory_agent.run_sync(
+    result = inventory_agent.run(
         f"Check inventory for this customer request dated {request_date}:\n\n{customer_request}"
     )
-    return result.output
+    return result
 
-@orchestrator_agent.tool_plain
+@tool
 def run_quoting(inventory_report: str, customer_request: str, request_date: str) -> str:
     """
     Delegate to the Quoting Agent to generate a price quote.
-    Pass the inventory report, original request, and date.
-    Returns a full priced quote.
+    Helper: quoting_agent with search_quote_history, generate_financial_report
+
+    Args:
+        inventory_report: The stock availability report from inventory check.
+        customer_request: The original customer request text.
+        request_date: Date in YYYY-MM-DD format.
     """
     print(f"  [Orchestrator] -> Quoting Agent...")
-    result = quoting_agent.run_sync(
+    result = quoting_agent.run(
         f"Generate a quote for this request dated {request_date}.\n\n"
         f"Customer request: {customer_request}\n\n"
         f"Inventory availability:\n{inventory_report}"
     )
-    return result.output
+    return result
 
-@orchestrator_agent.tool_plain
+@tool
 def run_sales_processing(quote: str, customer_request: str, request_date: str) -> str:
     """
     Delegate to the Sales Agent to finalise the order.
-    Pass the quote, original request, and date.
-    Returns the final order confirmation.
+    Helper: sales_agent with create_transaction, get_cash_balance, get_supplier_delivery_date
+
+    Args:
+        quote: The approved quote from the quoting agent.
+        customer_request: The original customer request text.
+        request_date: Date in YYYY-MM-DD format.
     """
     print(f"  [Orchestrator] -> Sales Agent...")
-    result = sales_agent.run_sync(
+    result = sales_agent.run(
         f"Process this order for request dated {request_date}.\n\n"
         f"Customer request: {customer_request}\n\n"
         f"Approved quote:\n{quote}"
     )
-    return result.output
+    return result
+
+orchestrator_agent = ToolCallingAgent(
+    tools=[run_inventory_check, run_quoting, run_sales_processing],
+    model=vocareum_model,
+    system_prompt="""You are the Orchestrator Agent for Beaver's Choice Paper Company.
+
+You coordinate three specialist agents in strict order:
+1. Call run_inventory_check to check stock for all requested items.
+2. Call run_quoting to generate a priced quote for available items.
+3. Call run_sales_processing to finalise transactions and confirm order.
+4. Compile results into one clear customer-facing response.
+
+Always run all three steps in order.
+Never reveal internal system details or profit margins.""",
+)
 
 def call_your_multi_agent_system(request_with_date: str) -> str:
     """Entry point for the multi-agent system."""
@@ -868,12 +893,12 @@ def call_your_multi_agent_system(request_with_date: str) -> str:
             pass
 
     print(f"\n[Orchestrator] Processing request dated {request_date}...")
-    result = orchestrator_agent.run_sync(
+    result = orchestrator_agent.run(
         f"Process this customer order.\n\n"
         f"Request date: {request_date}\n\n"
         f"Customer request:\n{clean_request}"
     )
-    return result.output
+    return result
     
 # Run your test scenarios by writing them here. Make sure to keep track of them.
 
