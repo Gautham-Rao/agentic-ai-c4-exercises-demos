@@ -634,7 +634,8 @@ def find_best_item_match(requested_name, inventory):
     return requested_name
 
 # Tools for inventory agent
-
+def inventory_agent():
+    #TODO
 
 # Tools for quoting agent
 
