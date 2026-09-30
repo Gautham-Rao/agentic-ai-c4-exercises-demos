@@ -588,13 +588,50 @@ def search_quote_history(search_terms: List[str], limit: int = 5) -> List[Dict]:
 ########################
 ########################
 
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
 
 # Set up and load your env parameters and instantiate your model.
+load_dotenv()
 
+client = OpenAI(
+    api_key=os.getenv("UDACITY_OPENAI_API_KEY", ""),
+    base_url="https://openai.vocareum.com/v1"
+)
+
+MODEL_NAME = "gpt-4o-mini"
 
 """Set up tools for your agents to use, these should be methods that combine the database functions above
  and apply criteria to them to ensure that the flow of the system is correct."""
 
+def call_llm(system_prompt, user_message, temperature=0.2):
+    response = client.chat.completions.create(
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role":"user", "content": user_message}
+        ],
+        temperature=temperature,
+        max_token=1500,
+    )
+    return response.choices[0].message.content.strip()
+
+def calculate_bulk_discount(total_units):
+    if total_units < 500:
+        return 0.0
+    elif total_units < 1000:
+        return 0.05
+    elif total_units < 5000:
+        return 0.10
+    else:
+        return 0.15
+
+def find_best_item_match(requested_name, inventory):
+    requested_lower = requested_name.lower()
+    for catalogue_name in inventory.keys():
+        if (requested_lower in catalogue_name.lower() or catalogue_name.lower() in requested_lower):
+            return catalogue_name
+    return requested_name
 
 # Tools for inventory agent
 
