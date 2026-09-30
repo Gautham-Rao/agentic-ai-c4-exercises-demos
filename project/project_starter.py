@@ -607,12 +607,13 @@ MODEL_NAME = "gpt-4o-mini"
 
 def call_llm(system_prompt, user_message, temperature=0.2):
     response = client.chat.completions.create(
+        model=MODEL_NAME,
         messages=[
             {"role": "system", "content": system_prompt},
             {"role":"user", "content": user_message}
         ],
         temperature=temperature,
-        max_token=1500,
+        max_tokens=1500,
     )
     return response.choices[0].message.content.strip()
 
@@ -906,7 +907,7 @@ def orchestrator_agent(request_with_date):
 def run_test_scenarios():
     
     print("Initializing Database...")
-    init_database()
+    init_database(db_engine)
     try:
         quote_requests_sample = pd.read_csv("quote_requests_sample.csv")
         quote_requests_sample["request_date"] = pd.to_datetime(
