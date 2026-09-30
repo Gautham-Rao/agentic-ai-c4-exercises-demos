@@ -634,17 +634,272 @@ def find_best_item_match(requested_name, inventory):
     return requested_name
 
 # Tools for inventory agent
-def inventory_agent():
-    #TODO
+
+def inventory_agent(request, request_date):
+    inventory_snapshot = get_all_inventory(request_date)
+    inventory_list = "\n".join(
+        f"  - {name}: {qty} units in stock"
+        for name, qty in inventory_snapshot.items()
+    ) or "  (no items currently in stock)"
+
+    system_prompt = """You are an inventory specialist for Beaver's Choice Paper Company.
+Analyse customer requests and check against available inventory.
+Respond in this exact format:
+
+ITEMS_REQUESTED:
+- <item_name>: <quantity> units
+
+ANALYSIS:
+<brief analysis>"""
+
+    user_message = f"""Customer Request: {request}
+
+Current Inventory as of {request_date}:
+{inventory_list}
+
+List every item and quantity the customer is requesting."""
+
+    llm_response = call_llm(system_prompt, user_message)
+
+    available_items = []
+    unavailable_items = []
+
+    for line in llm_response.split("\n"):
+        if line.strip().startswith("- ") and ":" in line:
+            try:
+                parts = line.strip("- ").split(":")
+                item_raw = parts[0].strip()
+                qty_str = parts[1].strip().split()[0].replace(",", "")
+                qty_requested = int(qty_str)
+                matched_name = find_best_item_match(item_raw, inventory_snapshot)
+                stock_in_hand = inventory_snapshot.get(matched_name, 0)
+                inv_df = pd.read_sql(
+                    "SELECT unit_price FROM inventory WHERE item_name = :name",
+                    db_engine, params={"name": matched_name},
+                )
+                unit_price = float(inv_df["unit_price"].iloc[0]) if not inv_df.empty else 0.0
+                item_info = {
+                    "item_name": matched_name,
+                    "requested_qty": qty_requested,
+                    "stock_in_hand": stock_in_hand,
+                    "unit_price": unit_price,
+                    "can_fulfill": stock_in_hand >= qty_requested,
+                }
+                if item_info["can_fulfill"]:
+                    available_items.append(item_info)
+                else:
+                    item_info["supplier_delivery_date"] = get_supplier_delivery_date(
+                        request_date, qty_requested
+                    )
+                    unavailable_items.append(item_info)
+            except (IndexError, ValueError):
+                continue
+
+    return {
+        "available_items": available_items,
+        "unavailable_items": unavailable_items,
+        "inventory_snapshot": inventory_snapshot,
+        "summary": (f"{len(available_items)} item(s) available, "
+                    f"{len(unavailable_items)} item(s) unavailable."),
+    }
 
 # Tools for quoting agent
 
+def quoting_agent(request, request_date, inventory_result):
+    available_items = inventory_result.get("available_items", [])
+    unavailable_items = inventory_result.get("unavailable_items", [])
+
+    if not available_items:
+        return {
+            "total_amount": 0.0, "discount_rate": 0.0,
+            "discount_amount": 0.0, "final_amount": 0.0,
+            "line_items": [], "quote_explanation": "No items available.",
+            "can_fulfill": False,
+        }
+
+    search_terms = [item["item_name"].split()[0] for item in available_items[:3]]
+    history = search_quote_history(search_terms, limit=3)
+    history_text = "\n".join(
+        f"  - {h.get('original_request','')[:80]}: ${h.get('total_amount',0):.2f}"
+        for h in history
+    ) or "  (no historical quotes found)"
+
+    total_units = sum(i["requested_qty"] for i in available_items)
+    discount_rate = calculate_bulk_discount(total_units)
+    line_items = []
+    subtotal = 0.0
+
+    for item in available_items:
+        line_price = item["requested_qty"] * item["unit_price"]
+        subtotal += line_price
+        line_items.append({
+            "item_name": item["item_name"],
+            "quantity": item["requested_qty"],
+            "unit_price": item["unit_price"],
+            "line_total": line_price,
+        })
+
+    discount_amount = subtotal * discount_rate
+    final_amount = subtotal - discount_amount
+
+    unavailable_note = ""
+    if unavailable_items:
+        unavailable_note = "UNAVAILABLE ITEMS:\n" + "\n".join(
+            f"  - {i['item_name']}: only {i['stock_in_hand']} in stock"
+            for i in unavailable_items
+        )
+
+    system_prompt = """You are a sales quotation specialist for Beaver's Choice Paper Company.
+Write clear, friendly, transparent quote summaries.
+Never reveal internal cost margins or system error messages.
+Always justify discounts applied."""
+
+    user_message = f"""Generate a quote explanation:
+
+Request: {request}
+Subtotal: ${subtotal:.2f}
+Bulk Discount ({discount_rate*100:.0f}%): -${discount_amount:.2f}
+Final Amount: ${final_amount:.2f}
+
+Line Items:
+{chr(10).join(f"  - {li['item_name']}: {li['quantity']} x ${li['unit_price']:.2f} = ${li['line_total']:.2f}" for li in line_items)}
+
+{unavailable_note}
+
+Historical Pricing:
+{history_text}
+
+Write a professional 2-3 sentence quote explanation for the customer."""
+
+    quote_explanation = call_llm(system_prompt, user_message)
+
+    return {
+        "total_amount": subtotal, "discount_rate": discount_rate,
+        "discount_amount": discount_amount, "final_amount": final_amount,
+        "line_items": line_items, "quote_explanation": quote_explanation,
+        "can_fulfill": True,
+    }
 
 # Tools for ordering agent
+def sales_agent(request, request_date, quote_result, inventory_result):
+    if not quote_result.get("can_fulfill", False):
+        unavailable = inventory_result.get("unavailable_items", [])
+        rejection = call_llm(
+            "You are a helpful customer service agent for Beaver's Choice Paper Company. "
+            "Write a polite message explaining why the order cannot be fulfilled. "
+            "Do not reveal internal system details.",
+            f"Request: {request}\n\nItems out of stock:\n" + "\n".join(
+                f"  - {i['item_name']}: {i['stock_in_hand']} available, "
+                f"{i['requested_qty']} requested"
+                for i in unavailable
+            ),
+        )
+        return {
+            "fulfilled_items": [], "unfulfilled_items": unavailable,
+            "total_charged": 0.0, "transaction_ids": [],
+            "customer_message": rejection, "success": False,
+        }
 
+    fulfilled_items = []
+    transaction_ids = []
+    discount_factor = 1.0 - quote_result.get("discount_rate", 0.0)
+
+    for item in quote_result.get("line_items", []):
+        discounted_price = item["line_total"] * discount_factor
+        txn_id = create_transaction(
+            item_name=item["item_name"],
+            transaction_type="sales",
+            quantity=item["quantity"],
+            price=discounted_price,
+            date=request_date,
+        )
+        transaction_ids.append(txn_id)
+        fulfilled_items.append({
+            "item_name": item["item_name"], "quantity": item["quantity"],
+            "unit_price": item["unit_price"], "charged": discounted_price,
+            "txn_id": txn_id,
+        })
+
+    max_qty = max((i["quantity"] for i in quote_result.get("line_items", [])), default=1)
+    delivery_date = get_supplier_delivery_date(request_date, max_qty)
+    unfulfilled = inventory_result.get("unavailable_items", [])
+
+    system_prompt = ("You are an order confirmation specialist for Beaver's Choice "
+                     "Paper Company. Write clear, friendly confirmations. "
+                     "Do not reveal profit margins or internal information.")
+    user_message = f"""Write an order confirmation:
+
+Request: {request}
+Fulfilled: {chr(10).join(f"  - {i['item_name']}: {i['quantity']} units" for i in fulfilled_items)}
+Not fulfilled: {chr(10).join(f"  - {i['item_name']}: insufficient stock" for i in unfulfilled) or "None"}
+Total charged: ${quote_result['final_amount']:.2f}
+Discount applied: {quote_result['discount_rate']*100:.0f}%
+Estimated delivery: {delivery_date}
+
+Write a warm 2-3 sentence confirmation."""
+
+    customer_message = call_llm(system_prompt, user_message)
+
+    return {
+        "fulfilled_items": fulfilled_items, "unfulfilled_items": unfulfilled,
+        "total_charged": quote_result["final_amount"],
+        "transaction_ids": transaction_ids,
+        "customer_message": customer_message, "success": True,
+    }
 
 # Set up your agents and create an orchestration agent that will manage them.
+def orchestrator_agent(request_with_date):
+    request_date = datetime.now().strftime("%Y-%m-%d")
+    clean_request = request_with_date
 
+    if "(Date of request:" in request_with_date:
+        parts = request_with_date.split("(Date of request:")
+        clean_request = parts[0].strip()
+        try:
+            request_date = parts[1].strip().rstrip(")").strip()
+        except IndexError:
+            pass
+
+    print(f"\n[Orchestrator] Processing request dated {request_date}...")
+    print("[Orchestrator] → Inventory Agent...")
+    inventory_result = inventory_agent(clean_request, request_date)
+    print(f"[Orchestrator]   {inventory_result['summary']}")
+
+    print("[Orchestrator] → Quoting Agent...")
+    quote_result = quoting_agent(clean_request, request_date, inventory_result)
+    print(f"[Orchestrator]   Quote: ${quote_result['final_amount']:.2f}")
+
+    print("[Orchestrator] → Sales Agent...")
+    sales_result = sales_agent(clean_request, request_date, quote_result, inventory_result)
+    print(f"[Orchestrator]   {'SUCCESS' if sales_result['success'] else 'REJECTED'}")
+
+    fulfilled = sales_result.get("fulfilled_items", [])
+    unfulfilled = sales_result.get("unfulfilled_items", [])
+
+    sections = [sales_result["customer_message"]]
+
+    if fulfilled:
+        sections.append(
+            f"\nORDER SUMMARY\n" +
+            "\n".join(f"  - {i['item_name']}: {i['quantity']} units — ${i['charged']:.2f}"
+                      for i in fulfilled) +
+            f"\n  Total: ${sales_result['total_charged']:.2f}" +
+            (f" ({quote_result['discount_rate']*100:.0f}% bulk discount applied)"
+             if quote_result["discount_rate"] > 0 else "")
+        )
+
+    if unfulfilled:
+        sections.append(
+            "\nITEMS NOT AVAILABLE\n" +
+            "\n".join(f"  - {i['item_name']}: only {i['stock_in_hand']} in stock "
+                      f"(requested {i['requested_qty']})"
+                      for i in unfulfilled)
+        )
+
+    if quote_result.get("quote_explanation"):
+        sections.append(f"\n{quote_result['quote_explanation']}")
+
+    return "\n".join(sections)
 
 # Run your test scenarios by writing them here. Make sure to keep track of them.
 
@@ -698,7 +953,7 @@ def run_test_scenarios():
         ############
         ############
 
-        # response = call_your_multi_agent_system(request_with_date)
+        response = call_your_multi_agent_system(request_with_date)
 
         # Update state
         report = generate_financial_report(request_date)
@@ -732,6 +987,8 @@ def run_test_scenarios():
     pd.DataFrame(results).to_csv("test_results.csv", index=False)
     return results
 
+def call_your_multi_agent_system(request_with_date):
+    return orchestrator_agent(request_with_date)
 
 if __name__ == "__main__":
     results = run_test_scenarios()
