@@ -872,7 +872,8 @@ def run_quoting(inventory_report: str, customer_request: str, request_date: str)
 def run_sales_processing(quote: str, customer_request: str, request_date: str) -> str:
     """
     Delegate to the Sales Agent to finalise the order.
-    Helper: sales_agent with create_transaction, get_cash_balance, get_supplier_delivery_date
+    Helper: sales_agent with create_transaction, get_cash_balance,
+    get_supplier_delivery_date
 
     Args:
         quote: The approved quote from the quoting agent.
@@ -880,13 +881,18 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
         request_date: Date in YYYY-MM-DD format.
     """
     print(f"  [Orchestrator] -> Sales Agent...")
+
+    # Step 1: Get current inventory to find available items
+    inventory = get_all_inventory(request_date)
+
+    # Step 2: Run sales agent to get confirmation message
     result = sales_agent.run(
         f"""You are the Sales Agent for Beaver's Choice Paper Company.
     Date: {request_date}
-
+    
     APPROVED QUOTE:
     {quote}
-
+    
     MANDATORY INSTRUCTIONS - follow exactly in this order:
     
     STEP 1: Call check_cash_balance with date="{request_date}"
@@ -897,23 +903,66 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
       - item_name: the exact item name as listed
       - quantity: the exact quantity listed
       - transaction_date: "{request_date}"
-      - discount_rate: the discount shown (0.0 if none, 0.05 for 5%, 0.10 for 10%, 0.15 for 15%)
-
-    DO NOT SKIP THIS STEP. If there are 3 available items, call record_sale 3 times.
+      - discount_rate: the discount shown (0.0 if none)
     
-    STEP 3: Call get_delivery_estimate with:
-      - request_date="{request_date}"
-      - quantity=the largest quantity from available items
+    DO NOT SKIP record_sale. Call it for EVERY available item.
     
-    STEP 4: Return a customer confirmation with:
-      - List of fulfilled items and prices
-      - Total amount charged
-      - Estimated delivery date
-      - Polite note about any unavailable items
-
+    STEP 3: Call get_delivery_estimate with date="{request_date}"
+    and the largest quantity from available items.
+    
+    STEP 4: Return confirmation with fulfilled items, total charged,
+    delivery date, and note about unavailable items.
+    
     Customer request: {customer_request}"""
-    )
-    return result
+        )
+    
+        # Step 3: Safety net - parse quote and force record any
+        # sales that should have been recorded
+        lines = quote.split("\n")
+        for line in lines:
+            # Look for lines mentioning available items with quantities
+            if any(word in line.lower() for word in
+                   ["available", "fulfilled", "can fulfill", "in stock"]):
+                for item_name, stock in inventory.items():
+                    if item_name.lower() in line.lower() and stock > 0:
+                        # Extract quantity from the line if possible
+                        import re
+                        numbers = re.findall(r'\d+', line)
+                        if numbers:
+                            qty = int(numbers[0])
+                            if 0 < qty <= stock:
+                                # Check if already recorded by comparing balance
+                                price_df = pd.read_sql(
+                                    "SELECT unit_price FROM inventory "
+                                    "WHERE item_name = :n",
+                                    db_engine, params={"n": item_name},
+                                )
+                                if not price_df.empty:
+                                    unit_price = float(
+                                        price_df["unit_price"].iloc[0]
+                                    )
+                                    # Verify transaction exists
+                                    txn_check = pd.read_sql(
+                                        "SELECT COUNT(*) as cnt FROM transactions "
+                                        "WHERE item_name=:n AND transaction_date=:d "
+                                        "AND transaction_type='sales'",
+                                        db_engine,
+                                        params={"n": item_name, "d": request_date},
+                                    )
+                                    if txn_check["cnt"].iloc[0] == 0:
+                                        create_transaction(
+                                            item_name=item_name,
+                                            transaction_type="sales",
+                                            quantity=qty,
+                                            price=qty * unit_price,
+                                            date=request_date,
+                                        )
+                                        print(
+                                            f"  [Safety net] Recorded: "
+                                            f"{item_name} x{qty}"
+                                        )
+    
+        return result
 
 orchestrator_agent = ToolCallingAgent(
     tools=[run_inventory_check, run_quoting, run_sales_processing],
