@@ -881,7 +881,7 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     """
     print(f"  [Orchestrator] -> Sales Agent...")
     result = sales_agent.run(
-    f"""You are the Sales Agent for Beaver's Choice Paper Company.
+        f"""You are the Sales Agent for Beaver's Choice Paper Company.
     Date: {request_date}
 
     APPROVED QUOTE:
@@ -912,7 +912,7 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
       - Polite note about any unavailable items
 
     Customer request: {customer_request}"""
-)
+    )
     return result
 
 orchestrator_agent = ToolCallingAgent(
