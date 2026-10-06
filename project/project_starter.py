@@ -914,55 +914,55 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     delivery date, and note about unavailable items.
     
     Customer request: {customer_request}"""
-        )
-    
-        # Step 3: Safety net - parse quote and force record any
-        # sales that should have been recorded
-        lines = quote.split("\n")
-        for line in lines:
-            # Look for lines mentioning available items with quantities
-            if any(word in line.lower() for word in
-                   ["available", "fulfilled", "can fulfill", "in stock"]):
-                for item_name, stock in inventory.items():
-                    if item_name.lower() in line.lower() and stock > 0:
-                        # Extract quantity from the line if possible
-                        import re
-                        numbers = re.findall(r'\d+', line)
-                        if numbers:
-                            qty = int(numbers[0])
-                            if 0 < qty <= stock:
-                                # Check if already recorded by comparing balance
-                                price_df = pd.read_sql(
-                                    "SELECT unit_price FROM inventory "
-                                    "WHERE item_name = :n",
-                                    db_engine, params={"n": item_name},
+    )
+
+    # Step 3: Safety net - parse quote and force record any
+    # sales that should have been recorded
+    lines = quote.split("\n")
+    for line in lines:
+        # Look for lines mentioning available items with quantities
+        if any(word in line.lower() for word in
+                ["available", "fulfilled", "can fulfill", "in stock"]):
+            for item_name, stock in inventory.items():
+                if item_name.lower() in line.lower() and stock > 0:
+                    # Extract quantity from the line if possible
+                    import re
+                    numbers = re.findall(r'\d+', line)
+                    if numbers:
+                        qty = int(numbers[0])
+                        if 0 < qty <= stock:
+                            # Check if already recorded by comparing balance
+                            price_df = pd.read_sql(
+                                "SELECT unit_price FROM inventory "
+                                "WHERE item_name = :n",
+                                db_engine, params={"n": item_name},
+                            )
+                            if not price_df.empty:
+                                unit_price = float(
+                                    price_df["unit_price"].iloc[0]
                                 )
-                                if not price_df.empty:
-                                    unit_price = float(
-                                        price_df["unit_price"].iloc[0]
+                                # Verify transaction exists
+                                txn_check = pd.read_sql(
+                                    "SELECT COUNT(*) as cnt FROM transactions "
+                                    "WHERE item_name=:n AND transaction_date=:d "
+                                    "AND transaction_type='sales'",
+                                    db_engine,
+                                    params={"n": item_name, "d": request_date},
+                                )
+                                if txn_check["cnt"].iloc[0] == 0:
+                                    create_transaction(
+                                        item_name=item_name,
+                                        transaction_type="sales",
+                                        quantity=qty,
+                                        price=qty * unit_price,
+                                        date=request_date,
                                     )
-                                    # Verify transaction exists
-                                    txn_check = pd.read_sql(
-                                        "SELECT COUNT(*) as cnt FROM transactions "
-                                        "WHERE item_name=:n AND transaction_date=:d "
-                                        "AND transaction_type='sales'",
-                                        db_engine,
-                                        params={"n": item_name, "d": request_date},
+                                    print(
+                                        f"  [Safety net] Recorded: "
+                                        f"{item_name} x{qty}"
                                     )
-                                    if txn_check["cnt"].iloc[0] == 0:
-                                        create_transaction(
-                                            item_name=item_name,
-                                            transaction_type="sales",
-                                            quantity=qty,
-                                            price=qty * unit_price,
-                                            date=request_date,
-                                        )
-                                        print(
-                                            f"  [Safety net] Recorded: "
-                                            f"{item_name} x{qty}"
-                                        )
     
-        return result
+    return result
 
 orchestrator_agent = ToolCallingAgent(
     tools=[run_inventory_check, run_quoting, run_sales_processing],
