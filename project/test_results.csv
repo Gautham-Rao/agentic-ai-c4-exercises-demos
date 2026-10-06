@@ -1,428 +1,250 @@
 request_id,request_date,cash_balance,inventory_value,response
-1,2025-04-01,45124.7,4875.3,"Thank you for your order with Beaver's Choice Paper Company! We're pleased to confirm your request for 200 sheets of A4 glossy paper, 100 sheets of heavy cardstock, and 100 sheets of assorted colored paper, all set to be delivered by April 5, 2025. If you have any questions or need further assistance, feel free to reach out!
+1,2025-04-01,45059.7,4940.299999999999,"Dear Customer,
 
-ORDER SUMMARY
-  - Glossy paper: 200 units — $40.00
-  - Cardstock: 100 units — $15.00
-  - Colored paper: 100 units — $10.00
-  Total: $65.00
+Thank you for your inquiry regarding the paper supplies for your upcoming ceremony. Unfortunately, we currently do not have any of the requested items in stock. Here are the availability updates:
 
-Thank you for your order request! We have prepared a quote for your paper supplies totaling $65.00, which includes 200 sheets of A4 glossy paper, 100 sheets of heavy cardstock, and 100 sheets of assorted colored paper. Please note that there are no discounts applied at this time, as the quantities do not meet our bulk discount threshold, but we are happy to assist you with your delivery by April 15, 2025."
-2,2025-04-03,45124.7,4875.3,"Subject: Order Request Update
+1. **200 sheets of A4 glossy paper** - Out of stock (estimated delivery by 2025-04-05)
+2. **100 sheets of heavy cardstock (white)** - Out of stock (estimated delivery by 2025-04-02)
+3. **100 sheets of colored paper (assorted colors)** - Out of stock (estimated delivery by 2025-04-02)
 
-Dear [Customer's Name],
+If you would like, we can reserve these items for you as soon as they become available.
 
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products for the upcoming parade.
+Thank you for your understanding,
+Beaver's Choice Paper Company"
+2,2025-04-03,45059.7,4940.299999999999,"Dear Customer,
 
-Unfortunately, I must inform you that we are currently unable to fulfill your order for the colorful poster paper, streamers, and balloons, as all of these items are out of stock at this time. We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause.
+Thank you for your order request placed on April 3, 2025, for:
+- 500 sheets of colorful poster paper
+- 300 rolls of streamers
+- 200 balloons for the parade.
 
-If you would like, I can assist you in finding alternative products or provide updates on when these items may be back in stock. Please let me know how you would like to proceed.
+Unfortunately, all requested items are currently out of stock. However, they are expected to be delivered by April 7, 2025.
 
-Thank you for your understanding, and we look forward to assisting you further.
+If you would like to proceed with the order once the items are available, please let us know. 
+
+Thank you for your understanding!
 
 Best regards,
+Beaver's Choice Paper Company"
+3,2025-04-04,45059.7,4926.699999999999,"Thank you for your order! We can fulfill the following items:
 
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
+- **A4 paper**: 272 sheets
 
-ITEMS NOT AVAILABLE
-  - Colorful poster paper: only 0 in stock (requested 500)
-  - Streamers: only 0 in stock (requested 300)
-  - Balloons: only 0 in stock (requested 200)
+**Total Charged**: $0.00
+**Delivery Date**: April 8, 2025
 
-No items available."
-3,2025-04-04,45124.7,4875.3,"Dear [Customer's Name],
+Unfortunately, we could not fulfill the entire order of 10,000 sheets of A4 paper, 5,000 sheets of A3 paper, and 500 reams of printer paper due to current inventory availability. We only have 272 sheets of A4 paper available at this time, while the A3 paper and printer paper are out of stock. 
 
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products for your upcoming conference.
+If you'd like to adjust your order based on our available stock, please let us know!"
+4,2025-04-05,45059.7,4926.699999999999,"Unfortunately, all requested items are currently unavailable. 
 
-Unfortunately, I must inform you that we are currently unable to fulfill your order as requested. Specifically, we have limited availability of A4 paper, with only 272 sheets in stock, and we do not have any A3 paper or printer paper available at this time.
+**Unavailable Items:**
+1. High-quality recycled cardstock 
+   - Stock Level: 0 units
+   - Estimated Delivery Date: 2025-04-09
+   - Requested Quantity: 500 sheets
 
-We understand the importance of having the necessary supplies for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in exploring alternative products or quantities that may be available, or we can notify you when the items you need are back in stock.
+2. A4 size printer paper
+   - Stock Level: 0 units
+   - Estimated Delivery Date: 2025-04-09
+   - Requested Quantity: 250 sheets
 
-Please let us know how you would like to proceed, and we will do our best to assist you.
+Please let us know if you would like to wait for the items to be restocked or if there's anything else we can assist you with."
+5,2025-04-05,45059.7,4926.699999999999,"Thank you for your order request! Here's a summary of your order status:
+
+**Available Items:**
+- **Colored paper:** 788 sheets available (500 sheets needed)
+- **Cardstock:** 595 sheets available (300 sheets needed)
+
+**Unavailable Items:**
+- **Washi tape:** 0 rolls available (Estimated delivery date: 2025-04-09)
+
+**Note:** We have sufficient quantities of colored paper and cardstock for your order. However, the washi tape is currently out of stock and is expected to arrive on April 9, 2025. Unfortunately, we do not have pricing benchmarks available for these items at this time.
+
+Your supplies can therefore only be partially fulfilled by your requested delivery date of April 15, 2025. Please let us know how you would like to proceed!"
+6,2025-04-06,45059.7,4926.699999999999,"We can fulfill your order for 200 sheets of cardstock immediately, as we have 595 sheets available in stock. However, the colorful construction paper (500 sheets) and white printer paper (300 sheets) are not available at this time. Both of these items are expected to be delivered by April 10, 2025, which is after your required delivery date of April 15, 2025.
+
+Unfortunately, we do not have a historical quote available for the requested items. 
+
+Your current options:
+- Order 200 sheets of cardstock now.
+- Wait for white printer paper and colorful construction paper, which will not meet your delivery deadline.
+
+Please let us know how you would like to proceed!"
+7,2025-04-07,45059.7,4926.699999999999,"Thank you for your inquiry regarding your order of paper supplies for your upcoming exhibition. 
+
+Unfortunately, we currently have no stock available for the requested items and therefore cannot fulfill your order:
+
+**Items Requested:**  
+- 500 sheets of glossy A4 paper (Unavailable)  
+- 1000 sheets of matte A3 paper (Unavailable)  
+- 300 poster boards (24"" x 36"") (Unavailable)  
+- 200 sheets of heavyweight cardstock (Unavailable)  
+
+**Estimated Delivery:** All items are expected to be available by April 11, 2025, but we cannot guarantee that the supply will be delivered on time for your event on April 15, 2025.  
+
+**Financial Overview:**  
+- Cash Balance: $45,059.70  
+- Inventory Value: $4,926.70  
+- Total Assets: $49,986.40  
+
+Please let us know if you would like to explore alternative options or adjust your order."
+8,2025-04-07,45459.7,4926.699999999999,"**Order Confirmation for Upcoming Ceremony:**
+
+Thank you for your order! We have successfully fulfilled the following items:
+
+- 500 sheets of A4 glossy paper
+- 2000 sheets of A5 colored paper
+
+**Total Charged:** $400.00
+
+Your estimated delivery date is **April 14, 2025**. 
+
+Unfortunately, we are unable to fulfill the orders for the following items due to insufficient stock:
+- 1000 sheets of A4 matte paper (available by April 11, 2025)
+- 3000 sheets of A4 recycled paper (available by April 14, 2025).
+
+Please let us know if you'd like to proceed with the additional items when they become available!"
+9,2025-04-07,45459.7,4926.699999999999,"Unfortunately, all requested items are currently out of stock with the following details:
+
+1. A4 white printer paper: 0 units in stock, delivery estimate: April 11, 2025
+2. A3 glossy paper: 0 units in stock, delivery estimate: April 8, 2025
+3. 100% recycled kraft paper envelopes: 0 units in stock, delivery estimate: April 8, 2025
+
+All items are expected to be delivered after your requested date of April 10, 2025. Please let us know if you would like to proceed with any alternative arrangements."
+13,2025-04-08,45459.7,4896.699999999999,"Thank you for your order! 
+
+- Fulfilled Item: 200 sheets of Cardstock. 
+- Total Charged: $0.00. 
+- Estimated Delivery Date: April 12, 2025. 
+
+Unfortunately, we could not fulfill the request for A4 printing paper (500 sheets) by your desired date of April 10, 2025, as it will only be available after that date. Thank you for your understanding!"
+12,2025-04-08,45459.7,4896.699999999999,"Dear Customer,
+
+Thank you for your order request dated April 8, 2025, for the following items:
+- 200 sheets of colorful cardstock
+- 500 sheets of standard printer paper
+- 100 paper napkins
+
+**Order Summary:**
+
+**Available Items:**
+- None
+
+**Unavailable Items:**
+- Colorful cardstock: 200 sheets (Estimated delivery: April 12, 2025)
+- Standard printer paper: 500 sheets (Estimated delivery: April 12, 2025)
+- Paper napkins: 100 units (Estimated delivery: April 9, 2025)
+
+Unfortunately, we do not have historical pricing benchmarks for the requested items right now. Additionally, our current cash balance is $45,459.70, with an inventory value of $4,896.70 and total assets amounting to $50,356.40.
+
+Please consider adjusting your order or extending the delivery timeframe in light of the stock availability status.
+
+We appreciate your understanding.
+
+Best regards,
+Beaver's Choice Paper Company"
+10,2025-04-08,45459.7,4896.699999999999,"Unfortunately, both the high-quality glossy paper and sturdy cardstock are out of stock, and the estimated delivery date for both items is April 12, 2025. Therefore, we are unable to fulfill your order at this time. If you have any other items in mind or wish to explore alternatives, please let us know!"
+11,2025-04-08,45459.7,4896.699999999999,"Dear Customer,
+
+Thank you for your order request. Unfortunately, both A3 glossy paper and A4 matte paper are currently out of stock. Therefore, we cannot process your order for 500 sheets of A3 glossy paper and 300 sheets of A4 matte paper at this time. If you wish to proceed with an order, please note that the estimated delivery for these items would be by April 12, 2025.
 
 Thank you for your understanding.
 
 Best regards,
+Beaver's Choice Paper Company"
+14,2025-04-09,45459.7,4896.699999999999,"Dear Customer,
 
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
+Thank you for your interest in placing an order for high-quality paper supplies. However, we regret to inform you that we currently have no stock available for the items you requested. 
 
-ITEMS NOT AVAILABLE
-  - A4 paper: only 272.0 in stock (requested 10000)
-  - A3 paper: only 0 in stock (requested 5000)
-  - Printer paper: only 0 in stock (requested 500)
+**Available Items:**
+- None
 
-No items available."
-4,2025-04-05,45124.7,4875.3,"Subject: Update on Your Order Request
+**Unavailable Items:**
+- **A4 Paper**: 0 units (Estimated delivery date: April 16, 2025)
+- **Poster Paper**: 0 units (Estimated delivery date: April 16, 2025)
+- **Cardstock**: 0 units (Estimated delivery date: April 13, 2025)
 
-Dear [Customer's Name],
+Unfortunately, we are unable to fulfill your order by the requested delivery date of April 15, 2025. 
 
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products for your upcoming reception.
+We sincerely apologize for any inconvenience this may cause and appreciate your understanding.
 
-Unfortunately, we are unable to fulfill your order as requested. Currently, we have 495 sheets of high-quality, recycled cardstock available, which is slightly below your requested quantity of 500 sheets. Additionally, our A4 size printer paper is currently out of stock.
+Best regards,
+Beaver's Choice Paper Company"
+15,2025-04-12,45459.7,4896.699999999999,"Dear Customer,
 
-We understand how important it is to have the right materials for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in adjusting your order or suggest alternative products that may meet your needs.
+Thank you for reaching out with your order request for high-quality paper supplies. Unfortunately, the requested items are currently out of stock and will not be available for delivery by the requested date of April 15, 2025. Here are the details:
 
-Please let us know how you would like to proceed, and we will do our best to assist you.
+1. **10,000 sheets of A4 white paper**: Out of stock, estimated delivery on April 19, 2025.
+2. **5,000 sheets of A3 colored paper (assorted colors)**: Out of stock, estimated delivery on April 19, 2025.
+3. **500 reams of cardboard for signage**: Out of stock, estimated delivery on April 16, 2025.
+
+Due to the unavailability of these items, we cannot provide a quote at this time. Please let me know if you would like to explore alternative products.
 
 Thank you for your understanding.
 
 Best regards,
+Beaver's Choice Paper Company."
+16,2025-04-13,45459.7,4896.699999999999,"Dear Customer,
 
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
+Thank you for your order request.
 
-ITEMS NOT AVAILABLE
-  - Cardstock: only 495.0 in stock (requested 500)
-  - A4 size printer paper: only 0 in stock (requested 250)
+**Summary of your order:**  
+- 500 sheets of A4 printer paper: Out of stock (Estimated delivery: 2025-04-14)  
+- 200 sheets of colorful construction paper: Out of stock (Estimated delivery: 2025-04-17)  
+- 100 sheets of poster board: Out of stock (Estimated delivery: 2025-04-17)  
 
-No items available."
-5,2025-04-05,45214.95,4780.3,"Thank you for your order with Beaver's Choice Paper Company! We have successfully processed your request for 500 sheets of colored paper and 300 sheets of cardstock, and your total comes to $90.25 after a 5% discount. Please note that we currently have insufficient stock for the decorative washi tape, but your order is estimated to be delivered by April 9, 2025, just in time for your party!
+Unfortunately, none of the requested items are available in stock at this time and they will not meet your delivery deadline of April 15, 2025. 
 
-ORDER SUMMARY
-  - Colored paper: 500 units — $47.50
-  - Cardstock: 300 units — $42.75
-  Total: $90.25 (5% bulk discount applied)
+We recommend considering alternatives or adjusting your delivery dates. Please let us know how you would like to proceed.
 
-ITEMS NOT AVAILABLE
-  - Decorative washi tape: only 0 in stock (requested 200)
+Best regards,  
+Beaver's Choice Paper Company."
+17,2025-04-14,45459.7,4896.699999999999,"Dear Customer,
 
-Thank you for your order request! Your subtotal for 500 sheets of colored paper and 300 sheets of cardstock comes to $95.00. We are pleased to offer you a 5% bulk discount of $4.75, bringing your final amount to $90.25. Unfortunately, the decorative washi tape is currently out of stock, but we can assist you with alternatives if needed. Please let us know how you would like to proceed!"
-6,2025-04-06,45214.95,4780.3,"Subject: Update on Your Order Request
+Thank you for your order inquiry for your upcoming reception. Here are the details regarding the requested paper supplies:
 
-Dear [Customer's Name],
+**Available Items:**
+- None
 
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products and your commitment to planning ahead for your upcoming assembly.
+**Unavailable Items and Estimated Delivery Dates:**
+- 1000 sheets of A4 white printer paper: Estimated delivery by April 18, 2025
+- 500 sheets of A3 colored paper (assorted colors): Estimated delivery by April 21, 2025
+- 2000 table napkins (white): Estimated delivery by April 18, 2025
+- 1000 paper cups (biodegradable): Estimated delivery by April 18, 2025
+- 500 paper plates (biodegradable): Estimated delivery by April 18, 2025
 
-Unfortunately, I must inform you that we are currently unable to fulfill your order as requested. Specifically, we do not have any colorful construction paper or white printer paper available at this time. Additionally, while we do have some cardstock in stock, we are short of the quantity you requested.
+Unfortunately, all requested supplies are currently out of stock, and thus, I am unable to provide a quote at this time. 
 
-We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in finding alternative products or quantities that may be available. Please let us know how you would like to proceed, and we will do our best to help.
+**Financial Report as of 2025-04-14:**
+- Cash balance: $45459.70
+- Inventory value: $4896.70
+- Total assets: $50356.40
 
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - Colorful construction paper: only 0 in stock (requested 500)
-  - White printer paper: only 0 in stock (requested 300)
-  - Cardstock: only 195.0 in stock (requested 200)
-
-No items available."
-7,2025-04-07,45214.95,4780.3,"Subject: Order Request Update
-
-Dear [Customer's Name],
-
-Thank you for your interest in placing a large order with Beaver's Choice Paper Company for your upcoming exhibition. We appreciate your business and the opportunity to assist you.
-
-Unfortunately, we are unable to fulfill your order as requested due to current stock limitations. Specifically, we have the following availability issues:
-
-- Glossy A4 paper: We currently have 272 sheets available, while you requested 500 sheets.
-- Matte A3 paper: Unfortunately, we do not have any sheets available at this time.
-- Poster boards (24"" x 36""): We are also out of stock on this item.
-- Heavyweight cardstock: We have 195 sheets available, but you requested 200 sheets.
-
-We understand how important these supplies are for your exhibition, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in adjusting your order to include only the items we currently have in stock or suggest alternative products that may meet your needs.
-
-Please let us know how you would like to proceed, and we will be more than happy to help.
-
-Thank you for your understanding.
+Thank you for your understanding! Please let us know if you would like to proceed with any specific items when they become available.
 
 Best regards,
+Beaver's Choice Paper Company"
+18,2025-04-14,45459.7,4896.699999999999,"We regret to inform you that all requested items for your order are currently out of stock. Here is the summary of your order:
 
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
+- **Requested Items**:
+  - 500 sheets of high-quality white cardstock: **Out of Stock** (Estimated delivery: April 18, 2025)
+  - 1000 sheets of standard printing paper: **Out of Stock** (Estimated delivery: April 18, 2025)
+  - 200 sheets of colored paper in assorted colors: **Out of Stock** (Estimated delivery: April 18, 2025)
 
-ITEMS NOT AVAILABLE
-  - A4 paper: only 272.0 in stock (requested 500)
-  - matte A3 paper: only 0 in stock (requested 1000)
-  - poster boards (24"" x 36""): only 0 in stock (requested 300)
-  - Cardstock: only 195.0 in stock (requested 200)
+Unfortunately, there are no historical quotes available for the requested items, and we are unable to process your order further without current pricing information. We have a cash balance of $45459.70 and total assets of $50356.40 available."
+19,2025-04-15,45459.7,4896.699999999999,"Dear Customer,
 
-No items available."
-8,2025-04-07,45292.35,4702.9,"Thank you for your order with Beaver's Choice Paper Company! We have successfully processed your request for 387 sheets of A4 glossy paper, and your estimated delivery date is April 11, 2025. We appreciate your understanding regarding the current stock limitations and look forward to serving you again soon!
+Thank you for your order request for paper supplies for the upcoming exhibition. Unfortunately, we regret to inform you that none of the requested items are currently available, and the delivery dates do not meet your requirement. Here is a summary of your order:
 
-ORDER SUMMARY
-  - Glossy paper: 387 units — $77.40
-  Total: $77.40
+- **A4 glossy paper**: Unavailable (Stock: -500 units). Supplier delivery date: **April 22, 2025**.
+- **A3 matte paper**: Unavailable (Stock: 0 units). Supplier delivery date: **April 19, 2025**.
+- **Cardstock in assorted colors**: Unavailable (Stock: 0 units). Supplier delivery date: **April 22, 2025**.
 
-ITEMS NOT AVAILABLE
-  - Glossy paper: only 387.0 in stock (requested 500)
-  - A4 matte paper: only 0 in stock (requested 1000)
-  - Colored paper: only 188.0 in stock (requested 2000)
-  - A4 recycled paper: only 0 in stock (requested 3000)
+Total unavailable items will be delivered after the required date of April 20, 2025.
 
-Thank you for your order request for paper supplies for your upcoming ceremony. Unfortunately, we currently have limited stock available: we can provide 387 sheets of A4 glossy paper, but we are out of stock for A4 matte paper, A4 recycled paper, and have only 188 sheets of A5 colored paper available. The subtotal for the available glossy paper is $77.40, and while there is no bulk discount applied, we encourage you to consider adjusting your order based on our current inventory. Please let us know how you would like to proceed!"
-9,2025-04-07,45297.35,4697.9,"Thank you for your order with Beaver's Choice Paper Company! We have successfully processed your request for 50 packets of 100% recycled kraft paper envelopes, and your estimated delivery date is April 8, 2025. Unfortunately, we currently have insufficient stock for the A4 white printer paper and A3 glossy paper, but we appreciate your understanding and look forward to serving you again soon!
-
-ORDER SUMMARY
-  - Kraft paper: 50 units — $5.00
-  Total: $5.00
-
-ITEMS NOT AVAILABLE
-  - A4 white printer paper: only 0 in stock (requested 200)
-  - A3 glossy paper: only 0 in stock (requested 100)
-
-Thank you for your order request! Unfortunately, we currently have no stock available for the A4 white printer paper and A3 glossy paper, which means we can only fulfill your order for the 50 packets of 100% recycled kraft paper envelopes at a total of $5.00. If you would like to adjust your order or inquire about restocking dates, please let us know, and we’ll be happy to assist you!"
-13,2025-04-08,45297.35,4697.9,"Dear Valued Customer,
-
-Thank you for your recent order request with Beaver's Choice Paper Company. We appreciate your interest in our products for your upcoming gathering.
-
-Unfortunately, we are unable to fulfill your order at this time. We currently do not have sufficient stock of A4 printing paper, and we are also short on cardstock to meet your request. 
-
-We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in finding alternative products or suggest a future date for your order when we expect to have the items back in stock.
-
-Please let us know how you would like to proceed, and thank you for your understanding.
+We apologize for any inconvenience this may cause and appreciate your understanding.
 
 Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - A4 printing paper: only 0 in stock (requested 500)
-  - Cardstock: only 195.0 in stock (requested 200)
-
-No items available."
-12,2025-04-08,45297.35,4697.9,"Subject: Update on Your Order Request
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products for your upcoming party.
-
-Unfortunately, we are unable to fulfill your order at this time due to stock limitations. Specifically, we currently have 195 sheets of colorful cardstock available, while your request was for 200 sheets. Additionally, both the standard printer paper and paper napkins are currently out of stock.
-
-We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in finding alternative products or notify you when the items become available again.
-
-Please let us know how you would like to proceed, and thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - Cardstock: only 195.0 in stock (requested 200)
-  - Standard printer paper: only 0 in stock (requested 500)
-  - Paper napkins: only 0 in stock (requested 100)
-
-No items available."
-10,2025-04-08,45297.35,4697.9,"Subject: Order Request Update
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products for your upcoming show.
-
-Unfortunately, we are unable to fulfill your order at this time. The high-quality glossy paper is currently out of stock, and we have a limited quantity of sturdy cardstock available, which does not meet your requested amount.
-
-We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in finding alternative products or provide updates on restock dates.
-
-Please let us know how you would like to proceed, and we will do our best to assist you.
-
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - high-quality glossy paper: only 0 in stock (requested 500)
-  - Cardstock: only 195.0 in stock (requested 300)
-
-No items available."
-11,2025-04-08,45297.35,4697.9,"Subject: Order Request Update
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products for your upcoming exhibition.
-
-Unfortunately, I must inform you that we are currently unable to fulfill your order for both the A3 glossy paper and the A4 matte paper, as these items are out of stock at this time. We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause.
-
-We recommend checking back with us closer to your required date, as we are continuously working to restock our inventory. If you have any other questions or if there’s anything else we can assist you with, please feel free to reach out.
-
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - A3 glossy paper: only 0 in stock (requested 500)
-  - A4 matte paper: only 0 in stock (requested 300)
-
-No items available."
-14,2025-04-09,45297.35,4697.9,"Subject: Order Inquiry - Beaver's Choice Paper Company
-
-Dear [Customer's Name],
-
-Thank you for reaching out to us with your order request for high-quality paper supplies. We appreciate your interest in our products for your upcoming performance.
-
-Unfortunately, we are unable to fulfill your order as requested. Currently, we have limited availability for the items you specified. Specifically, we have 272 sheets of A4 paper, 0 sheets of poster paper in various colors, and 195 sheets of cardstock available. 
-
-We understand the importance of having the right supplies for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in finding alternative products or quantities that may meet your needs. Please let us know how you would like to proceed.
-
-Thank you for your understanding, and we look forward to assisting you further.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - A4 paper: only 272.0 in stock (requested 5000)
-  - Poster paper (various colors): only 0 in stock (requested 2000)
-  - Cardstock: only 195.0 in stock (requested 500)
-
-No items available."
-15,2025-04-12,45297.35,4697.9,"Subject: Order Request Update
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our high-quality paper supplies for your upcoming demonstration.
-
-Unfortunately, we are unable to fulfill your order at this time due to stock limitations on the items you requested. Specifically, we currently do not have sufficient quantities of A4 white paper and cardboard for signage, and we have limited availability of the A3 colored paper.
-
-We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in exploring alternative options or provide updates on restock timelines for the items you need.
-
-Please let us know how you would like to proceed, and we will do our best to assist you.
-
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - A4 white paper: only 0 in stock (requested 10000)
-  - Colored paper: only 188.0 in stock (requested 5000)
-  - Cardboard for signage: only 0 in stock (requested 500)
-
-No items available."
-16,2025-04-13,45297.35,4697.9,"Subject: Order Request Update
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request. We appreciate your interest in our products and your need for supplies for your upcoming assembly event.
-
-Unfortunately, I regret to inform you that we are currently unable to fulfill your order for the A4 printer paper, colorful construction paper, and poster board, as all of these items are currently out of stock. We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause.
-
-If you would like, I can assist you in finding alternative products or provide updates on the availability of these items in the future. Please let me know how you would like to proceed.
-
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - A4 printer paper: only 0 in stock (requested 500)
-  - Colorful construction paper: only 0 in stock (requested 200)
-  - Poster board: only 0 in stock (requested 100)
-
-No items available."
-17,2025-04-14,45344.85,4647.9,"Thank you for your order with Beaver's Choice Paper Company! We have successfully processed your request for 500 biodegradable paper plates and applied a 5% discount, bringing your total to $47.50. Please note that due to insufficient stock, the remaining items will be delivered by April 18, 2025. We appreciate your understanding and look forward to serving you!
-
-ORDER SUMMARY
-  - Paper plates: 500 units — $47.50
-  Total: $47.50 (5% bulk discount applied)
-
-ITEMS NOT AVAILABLE
-  - A4 white printer paper: only 0 in stock (requested 1000)
-  - Colored paper: only 188.0 in stock (requested 500)
-  - Table napkins (white): only 0 in stock (requested 2000)
-  - Paper cups (biodegradable): only 0 in stock (requested 1000)
-
-Thank you for your order request for paper supplies for your upcoming reception. We have prepared a subtotal of $50.00, which includes a 5% bulk discount of $2.50, bringing your final amount to $47.50. However, please note that some items, including A4 white printer paper, table napkins, and biodegradable paper cups, are currently unavailable. We recommend adjusting your order to ensure timely delivery by April 15, 2025."
-18,2025-04-14,45344.85,4647.9,"Subject: Order Update for Your Paper Supplies
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request for the upcoming ceremony. We appreciate your interest in our products.
-
-Unfortunately, we are unable to fulfill your order as requested due to current stock limitations. Specifically, we have 195 sheets of high-quality white cardstock available, but you requested 500 sheets. Additionally, we currently do not have any standard printing paper in stock, and while we have 188 sheets of colored paper available, your request was for 200 sheets.
-
-We understand how important these supplies are for your event, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in adjusting your order to fit our available inventory or provide information on when we expect to have more stock available.
-
-Please let us know how you would like to proceed, and we will do our best to assist you.
-
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - Cardstock: only 195.0 in stock (requested 500)
-  - standard printing paper: only 0 in stock (requested 1000)
-  - Colored paper: only 188.0 in stock (requested 200)
-
-No items available."
-19,2025-04-15,45344.85,4647.9,"Subject: Order Request Update
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request for the upcoming exhibition. We appreciate your interest in our products.
-
-Unfortunately, we are unable to fulfill your order at this time due to stock availability issues. Specifically, we currently do not have the A4 glossy paper and A3 matte paper in stock, and we have limited quantities of the cardstock available.
-
-We understand how important these supplies are for your exhibition, and we sincerely apologize for any inconvenience this may cause. If you would like, we can assist you in finding alternative products or provide updates on when these items may become available.
-
-Please let us know how you would like to proceed, and thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - A4 glossy paper: only 0 in stock (requested 2000)
-  - A3 matte paper: only 0 in stock (requested 1500)
-  - Cardstock: only 195.0 in stock (requested 1000)
-
-No items available."
-20,2025-04-17,45344.85,4647.9,"Subject: Order Inquiry for Paper Supplies
-
-Dear [Customer's Name],
-
-Thank you for reaching out to Beaver's Choice Paper Company with your order request for the upcoming concert. We appreciate your interest in our products and your commitment to ensuring a successful event.
-
-Unfortunately, I must inform you that we are currently unable to fulfill your order for the flyers, posters, and tickets as all requested items are out of stock. We understand how important these materials are for your promotion and distribution efforts, and we sincerely apologize for any inconvenience this may cause.
-
-We recommend checking back with us in the near future, as we are continuously working to restock our inventory. If you have any other questions or if there’s anything else we can assist you with, please don’t hesitate to reach out.
-
-Thank you for your understanding.
-
-Best regards,
-
-[Your Name]  
-Customer Service Team  
-Beaver's Choice Paper Company
-
-ITEMS NOT AVAILABLE
-  - flyers: only 0 in stock (requested 5000)
-  - posters: only 0 in stock (requested 2000)
-  - tickets: only 0 in stock (requested 10000)
-
-No items available."
+Beaver's Choice Paper Company"
+20,2025-04-17,45459.7,4896.699999999999,"Unfortunately, all requested items (5,000 flyers, 2,000 posters, and 10,000 tickets) are currently out of stock and are expected to be delivered on April 24, 2025. As per your request, we cannot proceed with an order right now since we require these items to ensure timely delivery for your concert event."
