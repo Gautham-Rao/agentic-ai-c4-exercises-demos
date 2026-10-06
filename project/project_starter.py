@@ -732,25 +732,47 @@ def check_cash_balance(as_of_date: str) -> str:
     """
     balance = get_cash_balance(as_of_date)
     return f"Current cash balance as of {as_of_date}: ${balance:.2f}"
-
+    
 @tool
 def record_sale(
     item_name: str,
     quantity: int,
-    total_price: float,
     transaction_date: str,
+    discount_rate: float = 0.0,
 ) -> str:
     """
     Record a completed sale transaction in the database.
-    Call this for EACH item being sold.
+    Call this for EACH available item in the order.
+    Automatically looks up the unit price from the database.
     Helper function: create_transaction
 
     Args:
         item_name: Exact catalogue name of the item.
         quantity: Number of units sold.
-        total_price: Final price after discounts.
         transaction_date: Date in YYYY-MM-DD format.
+        discount_rate: Discount as decimal e.g. 0.10 for 10%. Default 0.0
     """
+    # Look up unit price automatically
+    price_df = pd.read_sql(
+        "SELECT unit_price FROM inventory WHERE item_name = :n",
+        db_engine, params={"n": item_name},
+    )
+    if price_df.empty:
+        return f"ERROR: Item '{item_name}' not found in catalogue."
+
+    unit_price    = float(price_df["unit_price"].iloc[0])
+    total_price   = quantity * unit_price * (1.0 - discount_rate)
+
+    # Check stock is actually available
+    stock_df = get_stock_level(item_name, transaction_date)
+    stock    = int(stock_df["current_stock"].iloc[0]) if not stock_df.empty else 0
+
+    if stock < quantity:
+        return (
+            f"INSUFFICIENT STOCK: {item_name} has only {stock} units, "
+            f"cannot sell {quantity}."
+        )
+
     txn_id = create_transaction(
         item_name=item_name,
         transaction_type="sales",
@@ -758,7 +780,11 @@ def record_sale(
         price=total_price,
         date=transaction_date,
     )
-    return f"Sale recorded. Transaction ID: {txn_id} | {item_name}: {quantity} units @ ${total_price:.2f}"
+    return (
+        f"SALE RECORDED. Transaction ID: {txn_id} | "
+        f"{item_name}: {quantity} units x ${unit_price:.4f} "
+        f"(discount {discount_rate*100:.0f}%) = ${total_price:.2f}"
+    )
 
 @tool
 def get_delivery_estimate(request_date: str, quantity: int) -> str:
@@ -792,12 +818,26 @@ def run_inventory_check(customer_request: str, request_date: str) -> str:
     print(f"  [Orchestrator] -> Inventory Agent...")
     result = inventory_agent.run(
         f"""You are the Inventory Agent for Beaver's Choice Paper Company.
-        1. Call get_inventory_snapshot with date {request_date} to see available stock.
-        2. For each item the customer requests, call check_item_stock to get its exact level.
-        3. For items with insufficient stock, call estimate_delivery to get the supplier date.
-        4. Return a clear summary with available and unavailable items.
+    Date: {request_date}
     
-        Customer request: {customer_request}"""
+    MANDATORY STEPS:
+    
+    STEP 1: Call get_inventory_snapshot with as_of_date="{request_date}"
+    Read the full inventory list carefully.
+    
+    STEP 2: For the customer request below, identify what items they need.
+    For each item they need, find the CLOSEST MATCHING name in the inventory.
+    For example: "A4 printer paper" matches "A4 paper", "glossy paper" matches "Glossy paper".
+    Then call check_item_stock with that exact inventory name and date="{request_date}".
+    
+    STEP 3: For any item with insufficient stock, call estimate_delivery with
+    date="{request_date}" and the requested quantity.
+    
+    STEP 4: Return a detailed summary:
+    - AVAILABLE items: name, stock, quantity requested, unit price
+    - UNAVAILABLE items: name, stock available, quantity requested, delivery date
+    
+    Customer request: {customer_request}"""
     )
     return result
 
@@ -841,18 +881,38 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     """
     print(f"  [Orchestrator] -> Sales Agent...")
     result = sales_agent.run(
-        f"""You are the Sales Agent for Beaver's Choice Paper Company.
-        1. Call check_cash_balance with date {request_date} to verify current funds.
-        2. For each item that CAN be fulfilled, call record_sale to create a transaction.
-        3. Call get_delivery estimate for the estimated delivery date.
-        4. Return a friendly confirmation with fulfilled items, total charged,
-            delivery date, and explanation for any unfulfilled items.
-        Never reveal internal system details.
+    f"""You are the Sales Agent for Beaver's Choice Paper Company.
+    Date: {request_date}
 
-        Customer request: {customer_request}"
-        Approved quote:
-        {quote}"""
-    )
+    APPROVED QUOTE:
+    {quote}
+
+    MANDATORY INSTRUCTIONS - follow exactly in this order:
+    
+    STEP 1: Call check_cash_balance with date="{request_date}"
+    
+    STEP 2: Look at the APPROVED QUOTE above carefully.
+    Find every item listed as AVAILABLE or that has sufficient stock.
+    For EACH available item you MUST call record_sale with:
+      - item_name: the exact item name as listed
+      - quantity: the exact quantity listed
+      - transaction_date: "{request_date}"
+      - discount_rate: the discount shown (0.0 if none, 0.05 for 5%, 0.10 for 10%, 0.15 for 15%)
+
+    DO NOT SKIP THIS STEP. If there are 3 available items, call record_sale 3 times.
+    
+    STEP 3: Call get_delivery_estimate with:
+      - request_date="{request_date}"
+      - quantity=the largest quantity from available items
+    
+    STEP 4: Return a customer confirmation with:
+      - List of fulfilled items and prices
+      - Total amount charged
+      - Estimated delivery date
+      - Polite note about any unavailable items
+
+    Customer request: {customer_request}"""
+)
     return result
 
 orchestrator_agent = ToolCallingAgent(
