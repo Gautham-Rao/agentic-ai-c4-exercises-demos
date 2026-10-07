@@ -758,7 +758,7 @@ def record_sale(
         db_engine, params={"n": item_name},
     )
     if price_df.empty:
-        return f"ERROR: Item '{item_name}' not found in catalogue."
+        return f"Unable to process: item not found in our current catalogue."
 
     unit_price    = float(price_df["unit_price"].iloc[0])
     total_price   = quantity * unit_price * (1.0 - discount_rate)
@@ -769,8 +769,8 @@ def record_sale(
 
     if stock < quantity:
         return (
-            f"INSUFFICIENT STOCK: {item_name} has only {stock} units, "
-            f"cannot sell {quantity}."
+            f"Insufficient stock for {item_name}: "
+            f"requested {quantity}, available stock does not meet requirement."
         )
 
     txn_id = create_transaction(
@@ -906,6 +906,14 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
       - discount_rate: the discount shown (0.0 if none)
     
     DO NOT SKIP record_sale. Call it for EVERY available item.
+
+    IMPORTANT - customer-facing response rules:
+    - Do NOT mention exact internal stock numbers like 'Stock Available: 272 units'
+    - Do NOT say 'Error processing order (item not found)'
+    - Instead say 'we could not identify that product in our current catalogue'
+    - Do NOT say 'INSUFFICIENT STOCK' - say 'insufficient stock available'
+    - An unable-to-process response must NEVER change the ledger
+    - Only call record_sale for items that are genuinely confirmed available
     
     STEP 3: Call get_delivery_estimate with date="{request_date}"
     and the largest quantity from available items.
@@ -915,52 +923,6 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     
     Customer request: {customer_request}"""
     )
-
-    # Step 3: Safety net - parse quote and force record any
-    # sales that should have been recorded
-    lines = quote.split("\n")
-    for line in lines:
-        # Look for lines mentioning available items with quantities
-        if any(word in line.lower() for word in
-                ["available", "fulfilled", "can fulfill", "in stock"]):
-            for item_name, stock in inventory.items():
-                if item_name.lower() in line.lower() and stock > 0:
-                    # Extract quantity from the line if possible
-                    import re
-                    numbers = re.findall(r'\d+', line)
-                    if numbers:
-                        qty = int(numbers[0])
-                        if 0 < qty <= stock:
-                            # Check if already recorded by comparing balance
-                            price_df = pd.read_sql(
-                                "SELECT unit_price FROM inventory "
-                                "WHERE item_name = :n",
-                                db_engine, params={"n": item_name},
-                            )
-                            if not price_df.empty:
-                                unit_price = float(
-                                    price_df["unit_price"].iloc[0]
-                                )
-                                # Verify transaction exists
-                                txn_check = pd.read_sql(
-                                    "SELECT COUNT(*) as cnt FROM transactions "
-                                    "WHERE item_name=:n AND transaction_date=:d "
-                                    "AND transaction_type='sales'",
-                                    db_engine,
-                                    params={"n": item_name, "d": request_date},
-                                )
-                                if txn_check["cnt"].iloc[0] == 0:
-                                    create_transaction(
-                                        item_name=item_name,
-                                        transaction_type="sales",
-                                        quantity=qty,
-                                        price=qty * unit_price,
-                                        date=request_date,
-                                    )
-                                    print(
-                                        f"  [Safety net] Recorded: "
-                                        f"{item_name} x{qty}"
-                                    )
     
     return result
 
@@ -968,6 +930,31 @@ orchestrator_agent = ToolCallingAgent(
     tools=[run_inventory_check, run_quoting, run_sales_processing],
     model=vocareum_model
 )
+
+def cash_delta_for_request(before_cash: float, after_cash: float) -> float:
+    """Calculate the cash change rounded to 2 decimal places."""
+    return round(after_cash - before_cash, 2)
+
+
+def validate_customer_charge(
+    response: str, before_cash: float, after_cash: float
+) -> None:
+    """
+    Validate that the cash delta matches what was stated in the
+    customer-facing response. Logs a warning if they diverge.
+    """
+    import re
+    delta = cash_delta_for_request(before_cash, after_cash)
+    totals = [
+        float(x.replace(',', ''))
+        for x in re.findall(r'\$([0-9][0-9,]*(?:\.\d{2})?)', response)
+    ]
+    stated_total = totals[-1] if totals else 0.0
+    if abs(delta - stated_total) > 0.01:
+        print(
+            f"[Warning] Customer total ${stated_total:.2f} does not "
+            f"match ledger delta ${delta:.2f}"
+        )
 
 def call_your_multi_agent_system(request_with_date: str) -> str:
     """Entry point for the multi-agent system."""
@@ -1058,12 +1045,16 @@ def run_test_scenarios():
         ############
         ############
 
-        response = call_your_multi_agent_system(request_with_date)
-
+        before_cash = current_cash
+        response = call_your_multi_agent_system(request_with_data)
+        
         # Update state
-        report = generate_financial_report(request_date)
+        report = generate_financial_report(request_data)
         current_cash = report["cash_balance"]
         current_inventory = report["inventory_value"]
+        
+        # Validate cash matches response
+        validate_customer_charge(response, before_cash, current_cash)
 
         print(f"Response: {response}")
         print(f"Updated Cash: ${current_cash:.2f}")
