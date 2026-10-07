@@ -834,8 +834,11 @@ def run_inventory_check(customer_request: str, request_date: str) -> str:
     date="{request_date}" and the requested quantity.
     
     STEP 4: Return a detailed summary:
-    - AVAILABLE items: name, stock, quantity requested, unit price
-    - UNAVAILABLE items: name, stock available, quantity requested, delivery date
+    - AVAILABLE items: name, whether we can fulfill the quantity, unit price
+    - UNAVAILABLE items: name, whether deliverable and when
+
+    IMPORTANT: Do NOT expose exact stock numbers to the customer.
+    Say "we have sufficient stock" not "Stock available: 272 units".
     
     Customer request: {customer_request}"""
     )
@@ -856,7 +859,7 @@ def run_quoting(inventory_report: str, customer_request: str, request_date: str)
     result = quoting_agent.run(
         f"""You are the Quoting Agent for Beaver's Choice Paper Company.
         1. Call lookup_quote_history to find historical pricing benchmarks.
-        2. Call get_company_financials with date {request_date} to check financial position.
+        2. Call get_company_financials with date {request_date} to check financial position for internal use only. Do NOT include cash, balance, inventory value or total assets in the customer-facing response.
         3. Calculate quote for each available item: quantity x unit_price.
         4. Apply bulk discounts: <500 units=0%, <1000=5%, <5000=10%, >=5000=15%.
         5. Return line items, subtotal, discount, final total and friendly explanation.
@@ -903,7 +906,16 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
       - transaction_date: "{request_date}"
       - discount_rate: the discount shown (0.0 if none)
     
-    DO NOT SKIP record_sale. Call it for EVERY available item.
+    CRITICAL: You are a database agent. Your PRIMARY job is calling record_sale.
+    Before writing ANY response text, you MUST:
+    - Call check_cash_balance first
+    - Then call record_sale for EACH available item
+    - Then call get_delivery_estimate
+    - Only THEN write the customer response
+
+    If you write a response without calling record_sale first, you have failed.
+    The customer response must only mention items where record_sale returned "SALE RecORDED".
+    Items where record_sale returned an error should be listed as unavailable.
 
     IMPORTANT - customer-facing response rules:
     - Do NOT mention exact internal stock numbers like 'Stock Available: 272 units'
@@ -1027,7 +1039,7 @@ def run_test_scenarios():
         request_date = row["request_date"].strftime("%Y-%m-%d")
 
         print(f"\n=== Request {idx+1} ===")
-        print(f"Context: {row['job_need_size']} organizing {row['event']}")
+        print(f"Context: {row['job']} {row['need_size']} organizing {row['event']}")
         print(f"Request Date: {request_date}")
         print(f"Cash Balance: ${current_cash:.2f}")
         print(f"Inventory Value: ${current_inventory:.2f}")

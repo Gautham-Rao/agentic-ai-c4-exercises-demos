@@ -2,7 +2,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from matplotlib.patches import FancyBboxPatch
-import matplotlib.pyplot as plt
+
 
 fig, ax = plt.subplots(1,1,figsize=(16,18))
 ax.set_xlim(0,16); ax.set_ylim(0,18); ax.axis('off')
@@ -25,7 +25,7 @@ def tbox(ax,x,y,title,tools,fc,ec):
         ax.text(x+0.15,y+h-0.5-i*0.28,t,va='center',fontsize=8,fontweight='bold',color=ec)
         ax.text(x+0.15,y+h-0.7-i*0.28,helper,va='center',fontsize=7,color='#555')
 
-ax.text(8,17.6,\"Beaver's Choice Paper Company\",ha='center',fontsize=16,fontweight='bold')
+ax.text(8,17.6,"Beaver's Choice Paper Company",ha='center',fontsize=16,fontweight='bold')
 ax.text(8,17.3,'Multi-Agent System - smolagents ToolCallingAgent',ha='center',fontsize=11,color='#555')
 box(ax,5.5,16.5,5,0.65,'Customer Request','request + (Date of request: YYYY-MM-DD)','#d0d0e8','#4a4a8a',12,8)
 arr(ax,8,16.5,8,15.85)
