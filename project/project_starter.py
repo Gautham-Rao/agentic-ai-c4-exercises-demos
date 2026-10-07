@@ -833,12 +833,15 @@ def run_inventory_check(customer_request: str, request_date: str) -> str:
     STEP 3: For any item with insufficient stock, call estimate_delivery with
     date="{request_date}" and the requested quantity.
     
-    STEP 4: Return a detailed summary:
-    - AVAILABLE items: name, whether we can fulfill the quantity, unit price
-    - UNAVAILABLE items: name, whether deliverable and when
+    STEP 4: Return a detailed summary using this EXACT format:
+AVAILABLE ITEMS:
+- <item_name>: CAN FULFILL <quantity> units at $<unit_price> each
 
-    IMPORTANT: Do NOT expose exact stock numbers to the customer.
-    Say "we have sufficient stock" not "Stock available: 272 units".
+UNAVAILABLE ITEMS:
+- <item_name>: CANNOT FULFILL <quantity> units - delivery by <date>
+
+CRITICAL: Never write the actual stock number.
+Write "CAN FULFILL" or "CANNOT FULFILL" only.
     
     Customer request: {customer_request}"""
     )
@@ -858,16 +861,34 @@ def run_quoting(inventory_report: str, customer_request: str, request_date: str)
     print(f"  [Orchestrator] -> Quoting Agent...")
     result = quoting_agent.run(
         f"""You are the Quoting Agent for Beaver's Choice Paper Company.
-        1. Call lookup_quote_history to find historical pricing benchmarks.
-        2. Call get_company_financials with date {request_date} to check financial position for internal use only. Do NOT include cash, balance, inventory value or total assets in the customer-facing response.
-        3. Calculate quote for each available item: quantity x unit_price.
-        4. Apply bulk discounts: <500 units=0%, <1000=5%, <5000=10%, >=5000=15%.
-        5. Return line items, subtotal, discount, final total and friendly explanation.
-        Never reveal internal margins.
-
-        Customer request: {customer_request}
-        Inventory availability:
-        {inventory_report}"""
+    You MUST call BOTH tools before giving your final answer.
+    
+    STEP 1: Call lookup_quote_history with search_terms for items in the request.
+    
+    STEP 2: Call get_company_financials with as_of_date="{request_date}" for internal use only.
+    Do NOT include cash balance, inventory value or total assets in your response.
+    
+    STEP 3: Calculate quote using ONLY the inventory report below.
+    For each AVAILABLE item: quantity x unit_price = line total.
+    Apply bulk discounts: <500=0%, <1000=5%, <5000=10%, >=5000=15%.
+    
+    STEP 4: Return ONLY this structured format:
+    AVAILABLE ITEMS FOR SALE:
+    - <item_name>: <quantity> units x $<unit_price> = $<line_total>
+    
+    SUBTOTAL: $<amount>
+    DISCOUNT: <rate>% = -$<amount>
+    FINAL TOTAL: $<amount>
+    
+    UNAVAILABLE ITEMS:
+    - <item_name>: <reason>
+    
+    Do not call final_answer until you have called both tools.
+    
+    Customer request: {customer_request}
+    
+    Inventory availability report:
+    {inventory_report}"""
     )
     return result
 
@@ -885,56 +906,46 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     """
     print(f"  [Orchestrator] -> Sales Agent...")
 
-
-    # Step: Run sales agent to get confirmation message
-    result = sales_agent.run(
+    # Step 1: LLM identifies and records each sale
+    recording_result = sales_agent.run(
         f"""You are the Sales Agent for Beaver's Choice Paper Company.
     Date: {request_date}
     
-    APPROVED QUOTE:
+    QUOTE TO PROCESS:
     {quote}
     
-    MANDATORY INSTRUCTIONS - follow exactly in this order:
+    INSTRUCTIONS:
+    1. Call check_cash_balance(as_of_date="{request_date}")
+    2. Find every item marked AVAILABLE in the quote above.
+    3. Call record_sale for each available item immediately.
+       Use exact item_name, quantity, transaction_date="{request_date}", discount_rate=0.0
+    4. Call get_delivery_estimate(request_date="{request_date}", quantity=100)
+    5. Return a simple list of what was recorded and what was not.
     
-    STEP 1: Call check_cash_balance with date="{request_date}"
+    IMPORTANT: You must call record_sale before final_answer."""
+        )
     
-    STEP 2: Look at the APPROVED QUOTE above carefully.
-    Find every item listed as AVAILABLE or that has sufficient stock.
-    For EACH available item you MUST call record_sale with:
-      - item_name: the exact item name as listed
-      - quantity: the exact quantity listed
-      - transaction_date: "{request_date}"
-      - discount_rate: the discount shown (0.0 if none)
+        # Step 2: LLM writes customer-facing response based on what was recorded
+        balance_after = get_cash_balance(request_date)
+        delivery = get_supplier_delivery_date(request_date, 100)
     
-    CRITICAL: You are a database agent. Your PRIMARY job is calling record_sale.
-    Before writing ANY response text, you MUST:
-    - Call check_cash_balance first
-    - Then call record_sale for EACH available item
-    - Then call get_delivery_estimate
-    - Only THEN write the customer response
-
-    If you write a response without calling record_sale first, you have failed.
-    The customer response must only mention items where record_sale returned "SALE RecORDED".
-    Items where record_sale returned an error should be listed as unavailable.
-
-    IMPORTANT - customer-facing response rules:
-    - Do NOT mention exact internal stock numbers like 'Stock Available: 272 units'
-    - Do NOT say 'Error processing order (item not found)'
-    - Instead say 'we could not identify that product in our current catalogue'
-    - Do NOT say 'INSUFFICIENT STOCK' - say 'insufficient stock available'
-    - An unable-to-process response must NEVER change the ledger
-    - Only call record_sale for items that are genuinely confirmed available
+        response = sales_agent.run(
+            f"""You are a customer service agent for Beaver's Choice Paper Company.
     
-    STEP 3: Call get_delivery_estimate with date="{request_date}"
-    and the largest quantity from available items.
+    Based on this order processing result:
+    {recording_result}
     
-    STEP 4: Return confirmation with fulfilled items, total charged,
-    delivery date, and note about unavailable items.
+    Write a professional customer confirmation that:
+    - Lists fulfilled items and total charged
+    - Gives estimated delivery date: {delivery}
+    - Politely explains unavailable items
+    - Does NOT mention cash balance, stock counts, transaction IDs
+    - Does NOT say SALE RECORDED or internal system messages
     
-    Customer request: {customer_request}"""
-    )
+    Customer request: {customer_request[:150]}"""
+        )
     
-    return result
+        return response
 
 orchestrator_agent = ToolCallingAgent(
     tools=[run_inventory_check, run_quoting, run_sales_processing],
