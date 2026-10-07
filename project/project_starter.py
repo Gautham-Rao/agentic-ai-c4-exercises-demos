@@ -909,43 +909,43 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     # Step 1: LLM identifies and records each sale
     recording_result = sales_agent.run(
         f"""You are the Sales Agent for Beaver's Choice Paper Company.
-    Date: {request_date}
-    
-    QUOTE TO PROCESS:
-    {quote}
-    
-    INSTRUCTIONS:
-    1. Call check_cash_balance(as_of_date="{request_date}")
-    2. Find every item marked AVAILABLE in the quote above.
-    3. Call record_sale for each available item immediately.
-       Use exact item_name, quantity, transaction_date="{request_date}", discount_rate=0.0
-    4. Call get_delivery_estimate(request_date="{request_date}", quantity=100)
-    5. Return a simple list of what was recorded and what was not.
-    
-    IMPORTANT: You must call record_sale before final_answer."""
-        )
-    
-        # Step 2: LLM writes customer-facing response based on what was recorded
-        balance_after = get_cash_balance(request_date)
-        delivery = get_supplier_delivery_date(request_date, 100)
-    
-        response = sales_agent.run(
-            f"""You are a customer service agent for Beaver's Choice Paper Company.
-    
-    Based on this order processing result:
-    {recording_result}
-    
-    Write a professional customer confirmation that:
-    - Lists fulfilled items and total charged
-    - Gives estimated delivery date: {delivery}
-    - Politely explains unavailable items
-    - Does NOT mention cash balance, stock counts, transaction IDs
-    - Does NOT say SALE RECORDED or internal system messages
-    
-    Customer request: {customer_request[:150]}"""
-        )
-    
-        return response
+Date: {request_date}
+
+QUOTE TO PROCESS:
+{quote}
+
+INSTRUCTIONS:
+1. Call check_cash_balance(as_of_date="{request_date}")
+2. Find every item marked AVAILABLE in the quote above.
+3. Call record_sale for each available item immediately.
+   Use exact item_name, quantity, transaction_date="{request_date}", discount_rate=0.0
+4. Call get_delivery_estimate(request_date="{request_date}", quantity=100)
+5. Return a simple list of what was recorded and what was not.
+
+IMPORTANT: You must call record_sale before final_answer."""
+    )
+
+    # Step 2: Get delivery date and cash balance in Python
+    delivery = get_supplier_delivery_date(request_date, 100)
+
+    # Step 3: LLM writes customer-facing response based on what was recorded
+    response = sales_agent.run(
+        f"""You are a customer service agent for Beaver's Choice Paper Company.
+
+Based on this order processing result:
+{recording_result}
+
+Write a professional customer confirmation that:
+- Lists fulfilled items and total charged
+- Gives estimated delivery date: {delivery}
+- Politely explains unavailable items
+- Does NOT mention cash balance, stock counts, transaction IDs
+- Does NOT say SALE RECORDED or internal system messages
+
+Customer request: {customer_request[:150]}"""
+    )
+
+    return response
 
 orchestrator_agent = ToolCallingAgent(
     tools=[run_inventory_check, run_quoting, run_sales_processing],
