@@ -855,7 +855,7 @@ def run_quoting(inventory_report: str, customer_request: str, request_date: str)
     print(f"  [Orchestrator] -> Quoting Agent...")
     result = quoting_agent.run(
         f"""You are the Quoting Agent for Beaver's Choice Paper Company.
-        1. Call lookup_quote histroy to find historical pricing benchmarks.
+        1. Call lookup_quote_histroy to find historical pricing benchmarks.
         2. Call get_company_financials with date {request_date} to check financial position.
         3. Calculate quote for each available item: quantity x unit_price.
         4. Apply bulk discounts: <500 units=0%, <1000=5%, <5000=10%, >=5000=15%.
@@ -972,13 +972,13 @@ def call_your_multi_agent_system(request_with_date: str) -> str:
     print(f"\n[Orchestrator] Processing request dated {request_date}...")
     result = orchestrator_agent.run(
         f"""You are the Orchestrator Agent for Beaver's Choice Paper Company.
-        Coordinate three specialist ahents in strict order:
+        Coordinate three specialist agents in strict order:
         1. Call run_inventory_check to check stock for all requested items.
-        2. Call run_quoting to generate a proced quote for available items.
+        2. Call run_quoting to generate a priced quote for available items.
         3. Call run_sales_processing to finalise transactions and confirm order.
         4. Compile results into one clear customer-facing response.
 
-        Request date: {request_date}"
+        Request date: {request_date}
         Customer request: {clean_request}"""
     )
     return result
@@ -1029,7 +1029,7 @@ def run_test_scenarios():
         request_date = row["request_date"].strftime("%Y-%m-%d")
 
         print(f"\n=== Request {idx+1} ===")
-        print(f"Context: {row['job']} organizing {row['event']}")
+        print(f"Context: {row['job_need_size']} organizing {row['event']}")
         print(f"Request Date: {request_date}")
         print(f"Cash Balance: ${current_cash:.2f}")
         print(f"Inventory Value: ${current_inventory:.2f}")
@@ -1046,10 +1046,10 @@ def run_test_scenarios():
         ############
 
         before_cash = current_cash
-        response = call_your_multi_agent_system(request_with_data)
+        response = call_your_multi_agent_system(request_with_date)
         
         # Update state
-        report = generate_financial_report(request_data)
+        report = generate_financial_report(request_date)
         current_cash = report["cash_balance"]
         current_inventory = report["inventory_value"]
         
