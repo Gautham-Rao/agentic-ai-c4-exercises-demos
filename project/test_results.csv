@@ -1,126 +1,341 @@
 request_id,request_date,cash_balance,inventory_value,response
-1,2025-04-01,45059.7,4940.299999999999,"Thank you for your request! Unfortunately, we could not identify the A4 glossy paper and colored paper in our current catalog. Additionally, the heavy cardstock (white) is unavailable due to insufficient stock. As such, we have been unable to fulfill your request. Please check back later or provide an alternative request."
-2,2025-04-03,45059.7,4940.299999999999,"Thank you for your order! However, we could not identify any of the products (colored poster paper, streamers, or balloons) in our current catalogue. Your total charged is $0.00, and the estimated delivery date for available items is April 7, 2025."
-3,2025-04-04,45059.7,4940.299999999999,"Thank you for your order request! Unfortunately, we could not identify the A4 paper and printer paper in our current catalogue, and the A3 paper has insufficient stock available. As a result, we were unable to process your order. If you have any other requests or need assistance, please let us know!"
-4,2025-04-05,45059.7,4940.299999999999,"Thank you for your order! However, we could not identify the items in our current catalogue. Unfortunately, there is insufficient stock available for your request. Your estimated delivery date would have been April 9, 2025, if the items were available."
-5,2025-04-05,45102.45,4895.3,"Thank you for your order! 
+1,2025-04-01,45059.7,4940.299999999999,"Dear Customer,
 
-Here’s a summary of what could be processed:  
-- **Cardstock**: 300 sheets  
-  - Total: $42.75  
+Thank you for your recent order request for paper supplies for the ceremony. We are pleased to confirm that your order for 100 sheets of heavy cardstock has been successfully fulfilled. The total amount charged for this order is based on the quantity of the fulfilled item.
 
-Unfortunately, we could not process the colored paper or washi tape due to catalog identification issues. Your supplies are estimated to be delivered by April 9, 2025."
-6,2025-04-06,45130.95,4865.3,"Thank you for your order! The following items have been successfully fulfilled:
-- 500 sheets of Colored Construction Paper
-- 200 sheets of Cardstock
+Your estimated delivery date is April 2, 2025.
 
-Total charged: $90.25
-Estimated delivery date: April 10, 2025.
+Unfortunately, we were unable to fulfill the request for 200 sheets of A4 glossy paper and colored paper, as these items are not currently available in our catalogue.
 
-Unfortunately, we could not identify the White A4 Printer Paper in our current catalogue."
-7,2025-04-07,45130.95,4865.3,"Your order has been confirmed with the following details:
+If you have any further questions or need assistance with additional items, please do not hesitate to reach out.
 
-**Fulfilled Items:**
-- 500 sheets of Glossy A4 Paper
-- 1000 sheets of Matte A3 Paper
-- 300 Poster Boards (24"" x 36"")
+Best regards,
+Beaver's Choice Paper Company Customer Service"
+2,2025-04-03,45859.7,4140.3,"Dear Customer,
 
-**Total Charged:** $417.50
-**Estimated Delivery Date:** April 11, 2025
+Thank you for your order! We are pleased to confirm that we have successfully processed your order for the following items:
 
-Unfortunately, we could not identify heavyweight cardstock in our current catalogue. If you would like to modify your order or need further assistance, please let us know!"
-8,2025-04-07,45130.95,4865.3,"Thank you for your order! Unfortunately, we could not identify the following products in our current catalogue and are unable to fulfill any part of your order:
-- A4 Glossy Paper
-- A4 Matte Paper
-- A5 Colored Paper
+- 500 units of Colored Paper
+- 0 units of Rolls of Banner Paper (unavailable)
+- 0 units of Balloons (unavailable)
 
-If you have any more questions or need assistance with different products, please let us know!"
-9,2025-04-07,45130.95,4865.3,"Thank you for your order request. Unfortunately, we could not identify the A4 White Printer Paper, A3 Glossy Paper, and Kraft Paper Envelopes in our current catalogue. Therefore, we could not process your order for those items. The estimated delivery date for any available items would have been April 11, 2025."
-13,2025-04-08,45130.95,4865.3,"We are unable to fulfill your order for A4 Printing Paper as we could not identify that product in our current catalogue. Additionally, we could not process your request for cardstock due to insufficient stock available. 
+Total charged: $800.00
 
-If you have any other items in mind or need assistance, please let us know!"
-12,2025-04-08,45130.95,4865.3,"Thank you for your order! We have successfully recorded the sale of 100 sheets of colorful cardstock for your upcoming party. The total charged is $10.00, and the estimated delivery date is 2025-04-12. 
+Your estimated delivery date is set for April 15, 2025.
 
-Unfortunately, we could not identify the standard printer paper and paper napkins in our current catalogue, and they could not be processed. 
+Unfortunately, we were unable to fulfill the rolls of banner paper and the balloons you requested. We appreciate your understanding and are here to help with any adjustments or substitutes you may need.
 
-If you have any further questions or need additional assistance, please feel free to reach out!"
-10,2025-04-08,45130.95,4865.3,"Your order for 500 sheets of high-quality glossy paper has been successfully placed. The total charge is $100.00, and the glossy paper is estimated to be delivered by April 9, 2025. 
+Thank you for choosing Beaver's Choice Paper Company!
 
-Unfortunately, we only have 95 sheets of cardstock available, which is insufficient to fulfill your request for 300 sheets. Please let us know how you'd like to proceed with the cardstock order."
-11,2025-04-08,45130.95,4865.3,"Thank you for your order! Unfortunately, we could not identify the A4 paper and A3 glossy paper in our current catalogue. As a result, we couldn't process your order. If you have other products in mind, please let us know. We are here to assist you!"
-14,2025-04-09,45130.95,4865.3,"Dear Customer,
+Best regards,
+Customer Service Team"
+3,2025-04-04,45859.7,4140.3,"Dear Customer,
 
-Thank you for your interest in placing a large order for paper supplies. However, we regret to inform you that we could not identify the products in our current catalogue for your requested quantities of 5,000 sheets of A4 paper and 2,000 sheets of large poster paper. Furthermore, 500 sheets of cardstock are currently noted as having insufficient stock available.
+Thank you for your order request. We would like to confirm that we are able to fulfill the following items:
+- 10,000 sheets of A4 paper
 
-Unfortunately, we cannot fulfill your order request at this time. Thank you for your understanding.
+The total charged for these items is being processed accordingly with a Final Total of $425.00.
+
+Your estimated delivery date is April 12, 2025.
+
+Unfortunately, we were unable to fulfill the following items from your original request:
+- 5,000 sheets of A3 paper
+- 500 reams of printer paper
+
+Please rest assured that we are committed to providing you with the best service and will notify you of any updates regarding the status of your order.
+
+Thank you for choosing Beaver's Choice Paper Company. If you have any further questions or require additional assistance, please do not hesitate to reach out.
+
+Best regards,
+Customer Service Team
+Beaver's Choice Paper Company"
+4,2025-04-05,45947.2,4052.7999999999997,"Dear Valued Customer,
+
+Thank you for your recent order with Beaver's Choice Paper Company! We are pleased to confirm that the following items have been successfully fulfilled:
+
+- **500 sheets of Cardstock** in various colors  
+- **250 sheets of A4 size printer paper**  
+
+The total charged for your order will be reflected in your receipt.
+
+We are happy to inform you that your estimated delivery date is **April 6, 2025**.  
+
+We understand the importance of having the right supplies for your reception, and we appreciate your understanding regarding any unavailable items. All requested items have been processed, and no items were left unfulfilled in your order.
+
+If you have any further questions or require additional assistance, please do not hesitate to reach out. 
+
+Thank you for choosing Beaver's Choice Paper Company!
+
+Best regards,
+Customer Service Team  
+Beaver's Choice Paper Company"
+5,2025-04-05,45957.2,4042.7999999999997,"Dear Customer,
+
+Thank you for your recent order. We are pleased to confirm that we have successfully processed the sale of 500 sheets of 8.5""x11"" colored paper at a total cost of $50.00.
+
+Please note that we were unable to fulfill the requests for:
+- 300 sheets of cardstock due to stock limitations.
+- 200 rolls of decorative washi tape as it is currently unavailable.
+
+Your estimated delivery date is set for April 15, 2025.
+
+If you have any further questions or need assistance, please do not hesitate to reach out.
+
+Best regards,
+The Beaver's Choice Paper Company Team"
+6,2025-04-06,45967.2,4032.7999999999997,"Dear Customer,
+
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm that we have successfully processed your order for the following items:
+
+- 300 sheets of White Printer Paper
+- 200 sheets of Colorful Construction Paper
+
+The total amount charged for your fulfilled items will be reflected in your account.
+
+Your estimated delivery date is April 7, 2025.
+
+Please note that we are currently unable to fulfill your request for cardstock in various colors, as this item is not available in our catalogue at this time. We apologize for any inconvenience this may cause.
+
+Thank you for choosing Beaver's Choice Paper Company. If you have any further questions or need assistance, feel free to reach out.
+
+Best regards,
+
+Beaver's Choice Paper Company Customer Service Team"
+7,2025-04-07,45967.2,4032.7999999999997,"Dear Valued Customer,
+
+Thank you for your recent order request with Beaver's Choice Paper Company for your upcoming exhibition. We have successfully fulfilled the following items from your order:
+
+- 500 sheets of glossy paper at $0.2000 each
+- 200 sheets of heavyweight cardstock at $0.1500 each
+
+Estimated Delivery Date: 2025-04-08
+
+Unfortunately, we were unable to process some of the items you requested due to their unavailability in our current catalogue:
+- 500 sheets of A4 paper
+- 1000 sheets of matte A3 paper
+- 300 poster boards (24"" x 36"")
+
+We apologize for any inconvenience this may have caused and appreciate your understanding.
+
+If you have any further questions or would like assistance with alternative products, please do not hesitate to reach out.
+
+Best regards,
+
+Customer Service Team  
+Beaver's Choice Paper Company"
+8,2025-04-07,45967.2,4032.7999999999997,"Dear Customer,
+
+Thank you for reaching out to us regarding your order for paper supplies for your upcoming ceremony. We appreciate your business.
+
+I would like to confirm that, unfortunately, we were unable to fulfill the following items from your order as they are not available in our catalogue:
+- A4 matte paper (1000 sheets)
+- A4 recycled paper (3000 sheets)
+
+We were able to fulfill the following items:
+- Glossy paper: 500 sheets at $100.00
+- Colored paper: 2000 sheets at $200.00
+
+The total for the items that can be fulfilled is $300.00. However, no items were charged to you for this order since the unavailable items are critical for your request.
+
+We are pleased to provide you with an estimated delivery date for any future orders you may wish to make. Your items would be expected to arrive by April 8, 2025.
+
+Please feel free to reach out if you have any questions or need further assistance.
+
+Best regards,
+
+[Your Name]
+Beaver's Choice Paper Company Customer Service"
+9,2025-04-07,45992.2,4007.7999999999997,"Dear Customer,
+
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm that we have successfully fulfilled the following items from your request:
+
+- Kraft paper: 50 units
+- Glossy paper: 100 units
+
+The total amount charged for the fulfilled items is calculated accordingly.
+
+Please note that the A4 white printer paper you requested is currently unavailable, and we expect it to be delivered by April 11, 2025. In the meantime, your fulfilled items will be delivered by April 8, 2025.
+
+We appreciate your understanding and look forward to serving you again soon!
 
 Best regards,
 Beaver's Choice Paper Company"
-15,2025-04-12,45130.95,4865.3,"Thank you for your order! Unfortunately, we could not fulfill your request for any items due to the following reasons:
+13,2025-04-08,45992.2,4007.7999999999997,"Dear Customer,
 
-1. **A4 White Paper and A3 Colored Paper:** These items could not be identified in our current catalogue, so we were unable to process that part of your order.
-2. **Cardboard:** We have insufficient stock available for the requested 500 reams.
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm that we have successfully processed your request for the following items:
 
-If you have further questions or need assistance with other products, please feel free to ask!"
-16,2025-04-13,45130.95,4865.3,"Summary of your order:
+- 200 sheets of Cardstock
 
-- **A4 Printer Paper:** 500 sheets at approximately $2850.00 (after 5% discount)
-- **Colorful Construction Paper:** 200 sheets - price uncertain
-- **Poster Board:** 100 sheets - price uncertain
+The total amount charged for your order is $30.00.
 
-### Estimated Subtotal:
-Approximately $2850.00 + prices for colorful construction paper and poster board.
+We want to inform you that, unfortunately, we are unable to fulfill your request for 500 sheets of A4 printing paper due to unavailability at this time. 
 
-All items are available for delivery by April 15, 2025, in time for your assembly event."
-17,2025-04-14,45130.95,4865.3,"Thank you for your order request. We have successfully recorded the sale for the following:
+Your order is estimated to be delivered by April 12, 2025.
 
-- **1000 sheets of A4 white printer paper**
+Thank you for choosing us for your paper supply needs. If you have any further questions or would like to make another request, feel free to reach out.
 
-Total charged: $95.00
+Best regards,
 
-The estimated delivery date for your order is April 15, 2025.
+[Your Name]
+Customer Service
+Beaver's Choice Paper Company"
+12,2025-04-08,45992.2,4007.7999999999997,"Dear Valued Customer,
 
-Unfortunately, we could not fulfill the following items as they are currently unavailable:
-- 500 sheets of A3 colored paper (assorted colors)
-- 2000 table napkins (white)
-- 1000 paper cups (biodegradable)
-- 500 paper plates (biodegradable)
+Thank you for your recent order with Beaver's Choice Paper Company.
 
-Thank you for your understanding."
-18,2025-04-14,45130.95,4865.3,"Thank you for your order request for paper supplies. Here is the summary:
+We are pleased to confirm that we have successfully fulfilled your order for 200 sheets of colorful cardstock and 500 sheets of standard printer paper. Your total charged for these items is $30.00.
 
-**Order Summary**:
-- **500 sheets of high-quality white cardstock**: *Not Available*
-- **1000 sheets of standard printing paper**: Charged $399.00
-- **200 sheets of colored paper**: *Not Available*
+Please note that the paper napkins you requested for 100 units are currently unavailable. We sincerely apologize for any inconvenience this may cause.
 
-**Final Total:** $399.00
+The estimated delivery date for your fulfilled items is April 9, 2025.
 
-The estimated delivery date for the available items is April 18, 2025. Thank you for your understanding!"
-19,2025-04-15,45130.95,4865.3,"Dear Customer,
+Thank you for your understanding, and we appreciate your business!
 
-Thank you for your order request. However, we regret to inform you that we could not identify the following products in our current catalogue:
-- A3 Matte Paper
-- Cardstock Assorted Colors
+Best regards,
 
-We successfully recorded your order for 2000 sheets of A4 Glossy Paper. 
+Customer Service Team
+Beaver's Choice Paper Company"
+10,2025-04-08,46012.2,3987.7999999999997,"Dear Customer,
 
-**Total Charged:** $380.00
-**Estimated Delivery Date:** April 22, 2025.
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm that we have successfully processed the order for the following items:
+
+- Glossy paper: 500 units
+
+The total charged for the glossy paper is $100.00.
+
+Please note that the cardstock you requested (300 units) is currently unavailable. We apologize for any inconvenience this may cause and appreciate your understanding.
+
+Your order is estimated to be delivered by April 9, 2025.
+
+Thank you for choosing us for your paper needs! If you have any questions or need further assistance, feel free to reach out.
+
+Best regards,
+
+Customer Service Team
+Beaver's Choice Paper Company"
+11,2025-04-08,46052.2,3947.7999999999997,"Dear Customer,
+
+Thank you for your order! We’re pleased to confirm that we have successfully fulfilled your request for 500 sheets of A3 glossy paper. The total charged for this order is $100.00.
+
+However, we regret to inform you that we were unable to fulfill the request for 300 sheets of A4 matte paper as it is currently unavailable. Delivery for the fulfilled items is estimated for April 15, 2025.
+
+If you have any further questions or require assistance, please don’t hesitate to reach out.
+
+Best regards,
+Beaver's Choice Paper Company"
+14,2025-04-09,46052.2,3947.7999999999997,"Dear Customer,
+
+Thank you for your recent order request with Beaver's Choice Paper Company for your upcoming performance. We are happy to confirm the following fulfilled item:
+
+- **Total Charged**: We regret to inform you that the item you requested was unavailable:
+  - *Large poster paper (24x36 inches)* - **Insufficient stock**.
+
+We would like to inform you that your order is scheduled for delivery by **April 10, 2025**.
+
+Please feel free to reach out to us if you have any further questions or let us know if you have any other items you would like to order.
 
 Thank you for your understanding.
 
 Best regards,
+Customer Service Team
 Beaver's Choice Paper Company"
-20,2025-04-17,45130.95,4865.3,"Thank you for your order! Here is a summary:
+15,2025-04-12,46052.2,3947.7999999999997,"Dear Valued Customer,
 
-**Order Summary:**
-- **Flyers (5,000 units)**: Unavailable
-- **Posters (2,000 units)**: Unavailable
-- **Tickets (10,000 units)**: Confirmed
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm your order for high-quality paper supplies as follows:
 
-**Total Charged:** $5,000.00 (after applying bulk discounts)
+- Quantity: 500 reams of cardstock
 
-**Estimated Delivery Date:** April 24, 2025
+The estimated delivery date for your order is set for April 19, 2025.
 
-We appreciate your understanding regarding the unavailable items and thank you for choosing Beaver's Choice Paper Company."
+Unfortunately, we regret to inform you that we currently have insufficient stock of the following items you requested and, therefore, we are unable to fulfill these specific items in your order:
+- 10,000 sheets of A4 white paper
+- 5,000 sheets of A3 colored paper (assorted colors)
+
+We sincerely apologize for any inconvenience this may cause.
+
+Should you have any further questions or require assistance, please do not hesitate to reach out to us.
+
+Thank you for choosing Beaver's Choice Paper Company. 
+
+Best regards,
+
+[Your Name]  
+Customer Service  
+Beaver's Choice Paper Company"
+16,2025-04-13,46152.2,3847.7999999999997,"Dear Customer,
+
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm that the following item has been fulfilled:
+
+- Large poster paper (24x36 inches) - 100 units
+
+The total charge for your order is $100.00.
+
+Your estimated delivery date is April 14, 2025. 
+
+Unfortunately, we were not able to process your request for 500 sheets of A4 printer paper, 200 sheets of colorful construction paper, and 100 sheets of poster board at this time. We appreciate your understanding and we hope to fulfill those items in your next order.
+
+If you have any further questions or need assistance, please feel free to contact us.
+
+Best regards,
+Beaver's Choice Paper Company"
+17,2025-04-14,46252.2,3747.7999999999997,"Dear Customer,
+
+Thank you for your recent order for paper supplies for your upcoming reception. We are pleased to confirm that we have successfully fulfilled the order for the following items:
+
+- 500 sheets of A3 colored paper at $0.10 each
+- 500 paper plates at $0.10 each
+
+The total amount charged for your order is $95.00 after a 5% discount on the subtotal of $100.00. 
+
+Unfortunately, we were unable to fulfill your request for the following items:
+- 1000 sheets of A4 white printer paper
+- 2000 table napkins (white)
+- 1000 paper cups (biodegradable)
+
+These items are not currently available in our catalogue, with an estimated delivery for these unavailable items on April 18, 2025.
+
+The estimated delivery date for your fulfilled items is April 15, 2025.
+
+We appreciate your understanding and look forward to serving you again in the future.
+
+Best regards,
+Beaver's Choice Paper Company Customer Service"
+18,2025-04-14,46252.2,3747.7999999999997,"Dear Customer,
+
+Thank you for your recent order with Beaver's Choice Paper Company. We are pleased to confirm that we successfully processed your order for the following item:
+
+- 500 sheets of high-quality white cardstock
+
+The estimated delivery date for your order is April 15, 2025.
+
+Unfortunately, we regret to inform you that the 80 lb text paper and colored paper are currently unavailable and could not be included in your order.
+
+Thank you for your understanding, and we appreciate your business. If you have any further questions or need assistance with anything else, please feel free to reach out.
+
+Sincerely,
+Beaver's Choice Paper Company Customer Service Team"
+19,2025-04-15,46252.2,3747.7999999999997,"Dear Customer,
+
+Thank you for placing your order with Beaver's Choice Paper Company! We're here to confirm your request for the following items:
+
+- 2000 sheets of A4 glossy paper
+
+Unfortunately, while your order for the glossy paper has been processed and is noted, we currently have only 0 sheets fulfilled at this time; therefore, 2000 sheets have not been recorded. We anticipate that the estimated delivery date for your fulfilled items will be on **April 16, 2025**.
+
+We appreciate your understanding regarding the unavailability of the glossy paper, and we will keep you updated on any changes to your order status.
+
+Thank you for choosing Beaver's Choice Paper Company. If you have any further questions or need assistance, please feel free to reach out.
+
+Best regards,
+
+Customer Service Team  
+Beaver's Choice Paper Company"
+20,2025-04-17,46252.2,3747.7999999999997,"Thank you for your order request for the upcoming concert. Unfortunately, we cannot fulfill your order for the following items:
+
+- Tickets: 10,000 units (CANNOT FULFILL, delivery by 2025-04-24)
+- Flyers: 5,000 units (CANNOT FULFILL, delivery by 2025-04-24)
+- Posters: 2,000 units (CANNOT FULFILL, delivery by 2025-04-24)
+
+As of now, there are no items available for sale, and the subtotal for your order is $0.00. 
+
+Please consider adjusting your order or check back later for availability. Thank you!"

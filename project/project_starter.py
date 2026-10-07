@@ -684,6 +684,9 @@ def lookup_quote_history(search_terms: str, limit: int = 3) -> str:
         search_terms: Comma-separated keywords to search for.
         limit: Maximum number of results to return.
     """
+    if limit is None or not isinstance(limit, int):
+        limit = 3
+        
     terms = [t.strip() for t in search_terms.split(",") if t.strip()]
     history = search_quote_history(terms, limit=limit)
     if not history:
