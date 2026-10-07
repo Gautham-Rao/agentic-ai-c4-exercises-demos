@@ -855,7 +855,7 @@ def run_quoting(inventory_report: str, customer_request: str, request_date: str)
     print(f"  [Orchestrator] -> Quoting Agent...")
     result = quoting_agent.run(
         f"""You are the Quoting Agent for Beaver's Choice Paper Company.
-        1. Call lookup_quote_histroy to find historical pricing benchmarks.
+        1. Call lookup_quote_history to find historical pricing benchmarks.
         2. Call get_company_financials with date {request_date} to check financial position.
         3. Calculate quote for each available item: quantity x unit_price.
         4. Apply bulk discounts: <500 units=0%, <1000=5%, <5000=10%, >=5000=15%.
@@ -882,10 +882,8 @@ def run_sales_processing(quote: str, customer_request: str, request_date: str) -
     """
     print(f"  [Orchestrator] -> Sales Agent...")
 
-    # Step 1: Get current inventory to find available items
-    inventory = get_all_inventory(request_date)
 
-    # Step 2: Run sales agent to get confirmation message
+    # Step: Run sales agent to get confirmation message
     result = sales_agent.run(
         f"""You are the Sales Agent for Beaver's Choice Paper Company.
     Date: {request_date}
